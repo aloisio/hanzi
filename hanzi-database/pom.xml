@@ -12,12 +12,22 @@
 	<description>Hanzi database in a jar</description>
 	<packaging>jar</packaging>
 
+	<properties>
+		<db.driver>org.apache.derby.jdbc.EmbeddedDriver</db.driver>
+		<db.delimiter>;</db.delimiter>
+		<db.directory>${project.build.outputDirectory}/database/hanzi</db.directory>
+		<db.url>jdbc:derby:${db.directory}</db.url>
+		<sql.directory>src/main/resources/sql</sql.directory>
+		<junit.category.integration>org.galobis.test.annotation.category.IntegrationTest</junit.category.integration>
+	</properties>
+
 	<build>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
 				<excludes>
 					<exclude>raw/</exclude>
+					<exclude>sql/</exclude>
 				</excludes>
 				<filtering>false</filtering>
 			</resource>
@@ -25,22 +35,85 @@
 
 		<plugins>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.2</version>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<configuration>
+							<target>
+								<!-- Drop database if it exists -->
+								<delete dir="${db.directory}" quiet="true" />
+								<!-- Create database schema -->
+								<sql userid="" password="" url="${db.url};create=true"
+									driver="${db.driver}" delimiter="${db.delimiter}" autocommit="true"
+									onerror="abort">
+									<classpath refid="maven.compile.classpath" />
+									<!-- Override default location (inside the database directory) -->
+									<connectionProperty name="derby.storage.tempDirectory"
+										value="${java.io.tmpdir}" />
+									<connectionProperty name="derby.stream.error.file"
+										value="${java.io.tmpdir}/derby.log" />
+									<!-- Create database schema -->
+									<transaction src="${sql.directory}/create-tables.sql" />
+								</sql>
+								<!-- Shutdown database -->
+								<sql classpath="maven.compile.classpath" userid="" password=""
+									url="${db.url};shutdown=true" driver="${db.driver}" onerror="continue"
+									failonconnectionerror="false">
+									none
+								</sql>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<excludedGroups>${junit.category.integration}</excludedGroups>
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+						<configuration>
+							<groups>${junit.category.integration}</groups>
+							<includes>
+								<include>**/*.class</include>
+							</includes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>verify</id>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
 		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
 		</dependency>
 	</dependencies>
 </project>
