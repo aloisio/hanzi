@@ -26,7 +26,6 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<excludes>
-					<exclude>raw/</exclude>
 					<exclude>sql/</exclude>
 				</excludes>
 				<filtering>false</filtering>
@@ -34,6 +33,31 @@
 		</resources>
 
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>set-system-properties</goal>
+						</goals>
+						<phase>prepare-package</phase>
+						<configuration>
+							<properties>
+								<property>
+									<name>java.security.policy</name>
+									<value>${basedir}/derby.policy</value>
+								</property>
+								<property>
+									<name>derby.stream.error.field</name>
+									<value>org.galobis.hanzi.database.DatabaseUtilities.DEV_NULL</value>
+								</property>
+							</properties>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
@@ -56,6 +80,17 @@
 									<!-- Create database schema -->
 									<transaction src="${sql.directory}/create-tables.sql" />
 								</sql>
+								<!-- Shutdown database -->
+								<sql classpath="maven.compile.classpath" userid="" password=""
+									url="${db.url};shutdown=true" driver="${db.driver}" onerror="continue"
+									failonconnectionerror="false">
+									none
+								</sql>
+								<!-- Populate database -->
+								<java classname="org.galobis.hanzi.database.DatabasePopulator">
+									<classpath refid="maven.compile.classpath" />
+									<arg value="${db.url}" />
+								</java>
 								<!-- Shutdown database -->
 								<sql classpath="maven.compile.classpath" userid="" password=""
 									url="${db.url};shutdown=true" driver="${db.driver}" onerror="continue"
@@ -106,6 +141,10 @@
 		<dependency>
 			<groupId>org.apache.derby</groupId>
 			<artifactId>derby</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jmockit</groupId>
+			<artifactId>jmockit</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

@@ -1,5 +1,6 @@
 CREATE TABLE hanzi (
-	id integer
+	codepoint INTEGER NOT NULL,
+	PRIMARY KEY (codepoint)
 );
 
 CREATE TABLE pinyin (
