@@ -3,6 +3,7 @@ package org.galobis.hanzi.database;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
@@ -39,14 +40,17 @@ public class DatabasePopulator {
     }
 
     private static void populateTables(Connection connection) throws Exception, IOException {
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO hanzi(codepoint) VALUES (?)");
         new UnihanReader(new UnihanVisitor() {
 
             @Override
             public void visit(Hanzi hanzi) throws SQLException {
-                String sql = String.format("insert into hanzi(codepoint) values(%s)", hanzi.codePoint());
-                connection.prepareCall(sql).executeUpdate();
+                statement.setInt(1, hanzi.codePoint());
+                statement.addBatch();
             }
         }).read();
+        statement.executeBatch();
+        statement.close();
     }
 
     private static void shutdownDatabase(String connectionURL) {

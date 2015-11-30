@@ -19,16 +19,6 @@
 	</properties>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>sql/</exclude>
-				</excludes>
-				<filtering>false</filtering>
-			</resource>
-		</resources>
-
 		<plugins>
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
@@ -83,6 +73,19 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>database/**/*</include>
+						<include>org/galobis/hanzi/database/DatabaseUtilities.class</include>
+					</includes>
+					<excludes>
+						<exclude>raw/**/*</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
