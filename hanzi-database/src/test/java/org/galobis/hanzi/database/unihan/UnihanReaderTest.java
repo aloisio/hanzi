@@ -3,16 +3,29 @@ package org.galobis.hanzi.database.unihan;
 import java.util.Arrays;
 
 import org.galobis.hanzi.model.Hanzi;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import mockit.Injectable;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
-import mockit.integration.junit4.JMockit;
 
-@RunWith(JMockit.class)
 public class UnihanReaderTest {
+
+    private UnihanReader reader;
+
+    @Injectable
+    private UnihanVisitor mockedVisitor;
+
+    @Before
+    public void initializeVisitor() throws Exception {
+        new NonStrictExpectations() {
+            {
+                mockedVisitor.visit((Hanzi) any);
+            }
+        };
+        reader = new UnihanReader(mockedVisitor);
+    }
 
     /**
      * Ideographic characters assigned by Unicode appear in the following blocks
@@ -27,13 +40,8 @@ public class UnihanReaderTest {
      * </ul>
      */
     @Test
-    public void should_read_all_Unihan_blocks(@Injectable UnihanVisitor mockedVisitor) throws Exception {
-        new NonStrictExpectations() {
-            {
-                mockedVisitor.visit((Hanzi) any);
-            }
-        };
-        new UnihanReader(mockedVisitor).read();
+    public void should_read_all_Unihan_blocks() throws Exception {
+        reader.read();
         for (int codePoint : Arrays.asList(
                 0x4E00, 0x9FD5, 0x3400, 0x4DB5,
                 0x20000, 0x2A6D6, 0x2A700, 0x2B734,
@@ -44,5 +52,15 @@ public class UnihanReaderTest {
                 }
             };
         }
+    }
+
+    @Test
+    public void should_close_visitor_when_finished_reading() throws Exception {
+        reader.read();
+        new Verifications() {
+            {
+                mockedVisitor.close();
+            }
+        };
     }
 }

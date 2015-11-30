@@ -3,13 +3,11 @@ package org.galobis.hanzi.database;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
+import org.galobis.hanzi.database.unihan.BatchUnihanVisitor;
 import org.galobis.hanzi.database.unihan.UnihanReader;
-import org.galobis.hanzi.database.unihan.UnihanVisitor;
-import org.galobis.hanzi.model.Hanzi;
 
 public class DatabasePopulator {
     private static final String[] DDL_STATEMENTS = {
@@ -40,17 +38,7 @@ public class DatabasePopulator {
     }
 
     private static void populateTables(Connection connection) throws Exception, IOException {
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO hanzi(codepoint) VALUES (?)");
-        new UnihanReader(new UnihanVisitor() {
-
-            @Override
-            public void visit(Hanzi hanzi) throws SQLException {
-                statement.setInt(1, hanzi.codePoint());
-                statement.addBatch();
-            }
-        }).read();
-        statement.executeBatch();
-        statement.close();
+        new UnihanReader(new BatchUnihanVisitor(connection)).read();
     }
 
     private static void shutdownDatabase(String connectionURL) {

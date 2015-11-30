@@ -30,6 +30,7 @@ public class UnihanReader {
                 }
                 streamReader.next();
             }
+            visitor.close();
         }
     }
 
