@@ -1,28 +1,67 @@
 package org.galobis.hanzi.database;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.galobis.hanzi.database.unihan.UnihanVisitor;
+import org.apache.derby.jdbc.EmbeddedDriver;
 import org.galobis.hanzi.database.unihan.UnihanReader;
+import org.galobis.hanzi.database.unihan.UnihanVisitor;
 import org.galobis.hanzi.model.Hanzi;
 
 public class DatabasePopulator {
+    private static final String[] DDL_STATEMENTS = {
+            "CREATE TABLE hanzi (codepoint INTEGER NOT NULL, PRIMARY KEY (codepoint))",
+            "CREATE TABLE pinyin (id INTEGER NOT NULL, PRIMARY KEY (id))",
+            "CREATE TABLE reading (id INTEGER NOT NULL, PRIMARY KEY (id))",
+            "CREATE TABLE simplified (id INTEGER NOT NULL, PRIMARY KEY (id))",
+            "CREATE TABLE traditional (id INTEGER NOT NULL, PRIMARY KEY (id))"
+    };
+
     public static void main(String[] args) throws Exception {
         if (args.length > 0) {
             String connectionURL = args[0];
-            DriverManager.registerDriver(new org.apache.derby.jdbc.EmbeddedDriver());
-            try (Connection connection = DriverManager.getConnection(connectionURL)) {
-                new UnihanReader(new UnihanVisitor() {
-
-                    @Override
-                    public void visit(Hanzi hanzi) throws SQLException {
-                        String sql = String.format("insert into hanzi(codepoint) values(%s)", hanzi.codePoint());
-                        connection.prepareCall(sql).executeUpdate();
-                    }
-                }).read();
+            DriverManager.registerDriver(new EmbeddedDriver());
+            try (Connection connection = DriverManager.getConnection(connectionURL + ";create=true")) {
+                createTables(connection);
+                populateTables(connection);
             }
+            shutdownDatabase(connectionURL);
+            shutdownEngine();
+        }
+    }
+
+    private static void createTables(Connection connection) throws SQLException {
+        for (String ddl : DDL_STATEMENTS) {
+            connection.prepareCall(ddl).executeUpdate();
+        }
+    }
+
+    private static void populateTables(Connection connection) throws Exception, IOException {
+        new UnihanReader(new UnihanVisitor() {
+
+            @Override
+            public void visit(Hanzi hanzi) throws SQLException {
+                String sql = String.format("insert into hanzi(codepoint) values(%s)", hanzi.codePoint());
+                connection.prepareCall(sql).executeUpdate();
+            }
+        }).read();
+    }
+
+    private static void shutdownDatabase(String connectionURL) {
+        try (Connection connection = DriverManager.getConnection(connectionURL + ";shutdown=true")) {
+            return;
+        } catch (SQLException exc) {
+            return;
+        }
+    }
+
+    private static void shutdownEngine() {
+        try (Connection connection = DriverManager.getConnection("jdbc:derby:" + ";shutdown=true")) {
+            return;
+        } catch (SQLException exc) {
+            return;
         }
     }
 }
