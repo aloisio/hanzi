@@ -24,12 +24,14 @@ public class BatchUnihanVisitor implements UnihanVisitor {
     BatchUnihanVisitor(Connection connection, int batchSize) throws Exception {
         this.batchSize = batchSize;
         this.connection = connection;
-        statement = connection.prepareStatement("INSERT INTO hanzi(codepoint) VALUES (?)");
+        statement = connection
+                .prepareStatement("INSERT INTO hanzi(codepoint, definition) VALUES (?, ?)");
     }
 
     @Override
     public void visit(Hanzi hanzi) throws Exception {
         statement.setInt(1, hanzi.codePoint());
+        statement.setString(2, hanzi.defintion());
         statement.addBatch();
         batchCount++;
         if ((batchCount % batchSize) == 0) {
@@ -46,5 +48,4 @@ public class BatchUnihanVisitor implements UnihanVisitor {
         }
         statement.close();
     }
-
 }

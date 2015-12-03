@@ -25,7 +25,9 @@ public class UnihanReader {
         try (UnihanXMLStreamReader streamReader = new UnihanXMLStreamReader(input)) {
             while (streamReader.hasNext()) {
                 if (streamReader.isStartElement() && streamReader.getLocalName().equals("char")) {
-                    Hanzi hanzi = new Hanzi(Integer.valueOf(streamReader.getAttributeValue(null, "cp"), 16));
+                    Integer codePoint = Integer.valueOf(streamReader.getAttributeValue(null, "cp"), 16);
+                    String definition = streamReader.getAttributeValue(null, "kDefinition");
+                    Hanzi hanzi = new Hanzi(codePoint, definition);
                     visitor.visit(hanzi);
                 }
                 streamReader.next();
@@ -35,7 +37,8 @@ public class UnihanReader {
     }
 
     private static InputStream openZipFile() throws IOException {
-        ZipInputStream input = new ZipInputStream(UnihanReader.class.getResourceAsStream("/raw/ucd.unihan.flat.zip"));
+        ZipInputStream input = new ZipInputStream(
+                UnihanReader.class.getResourceAsStream("/raw/ucd.unihan.flat.zip"));
         input.getNextEntry();
         return input;
     }

@@ -5,12 +5,23 @@ import java.util.Objects;
 public class Hanzi {
     private final Integer codePoint;
 
+    private final String definition;
+
     public Hanzi(Integer codePoint) {
+        this(codePoint, null);
+    }
+
+    public Hanzi(Integer codePoint, String definition) {
         this.codePoint = codePoint;
+        this.definition = definition;
     }
 
     public Integer codePoint() {
         return codePoint;
+    }
+
+    public String defintion() {
+        return definition;
     }
 
     @Override

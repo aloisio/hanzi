@@ -4,6 +4,7 @@ import static org.galobis.hanzi.database.DatabaseTestUtilities.asList;
 import static org.galobis.hanzi.database.DatabaseTestUtilities.getConnection;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
@@ -27,12 +28,23 @@ import org.xml.sax.helpers.DefaultHandler;
 
 @Category(IntegrationTest.class)
 public class InitialStateIntegrationTest {
+    private static final String CODEPOINT = "codepoint";
+
+    private static final String DEFINITION = "definition";
+
+    private static final String SQL_COLUMN_HANZI = "SELECT %s FROM hanzi WHERE codepoint IN (%d, %d, %d)";
+
+    private static final String SQL_COUNT_HANZI = "SELECT COUNT(%d) FROM hanzi";
+
     private static Connection connection;
 
     private static int totalUnihanCodePoints = 0;
 
+    private static int totalUnihanDefinitions = 0;
+
     @BeforeClass
     public static void connectToDatabase() throws Exception {
+        collectUnihanStats();
         connection = getConnection();
     }
 
@@ -44,27 +56,42 @@ public class InitialStateIntegrationTest {
     @Test
     public void database_should_contain_unihan_codepoints() throws Exception {
         List<Integer> codepoints = asList(connection,
-                "select codepoint from hanzi where codepoint in (25165, 30340, 132913)",
+                String.format(SQL_COLUMN_HANZI, CODEPOINT, asInt("才"), asInt("的"), asInt("𠜱")),
                 Integer.class);
         assertThat(codepoints, contains(asInt("才"), asInt("的"), asInt("𠜱")));
     }
 
     @Test
     public void database_should_contain_all_unihan_codepoints() throws Exception {
-        collectUnihanStats();
         try (ResultSet codepointCount = connection.prepareCall(
-                "SELECT COUNT(codepoint) FROM hanzi").executeQuery()) {
+                String.format(SQL_COUNT_HANZI, CODEPOINT)).executeQuery()) {
             codepointCount.next();
             assertThat(codepointCount.getInt(1), is(equalTo(totalUnihanCodePoints)));
         }
     }
 
-    public static Integer asInt(String hanzi) {
-        return hanzi.codePointAt(0);
+    @Test
+    public void database_should_contain_Unihan_definitions() throws Exception {
+        List<String> definitions = asList(connection,
+                String.format(SQL_COLUMN_HANZI, DEFINITION, asInt("梦"), asInt("覉"), asInt("䃟")),
+                String.class);
+        assertThat(definitions,
+                containsInAnyOrder("dream; visionary; wishful",
+                        "variant of 羇 U+7F87, inn; to lodge; to travel",
+                        "䃟頭窰, a place in Hong Kong"));
     }
 
-    public static String asString(int codePoint) {
-        return String.valueOf(Character.toChars(codePoint));
+    @Test
+    public void database_should_contain_all_Unihan_definitions() throws Exception {
+        try (ResultSet definitionCount = connection.prepareCall(
+                String.format(SQL_COUNT_HANZI, DEFINITION)).executeQuery()) {
+            definitionCount.next();
+            assertThat(definitionCount.getInt(1), is(equalTo(totalUnihanDefinitions)));
+        }
+    }
+
+    public static Integer asInt(String hanzi) {
+        return hanzi.codePointAt(0);
     }
 
     private static void collectUnihanStats() throws Exception {
@@ -76,8 +103,11 @@ public class InitialStateIntegrationTest {
                 @Override
                 public void startElement(String uri, String localName, String qName, Attributes attributes)
                         throws SAXException {
-                    if (qName.equals("char")) {
+                    if ("char".equals(qName)) {
                         totalUnihanCodePoints++;
+                    }
+                    if (attributes.getValue("kDefinition") != null) {
+                        totalUnihanDefinitions++;
                     }
                 }
             });

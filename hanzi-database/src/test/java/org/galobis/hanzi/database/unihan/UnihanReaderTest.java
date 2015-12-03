@@ -1,5 +1,8 @@
 package org.galobis.hanzi.database.unihan;
 
+import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
+import static org.hamcrest.Matchers.is;
+
 import java.util.Arrays;
 
 import org.galobis.hanzi.model.Hanzi;
@@ -60,6 +63,17 @@ public class UnihanReaderTest {
         new Verifications() {
             {
                 mockedVisitor.close();
+            }
+        };
+    }
+
+    @Test
+    public void should_read_Unihan_definitions() throws Exception {
+        reader.read();
+        new Verifications() {
+            {
+                mockedVisitor.visit(withArgThat(is(sameBeanAs(
+                        new Hanzi("漢".codePointAt(0), "the Chinese people, Chinese language")))));
             }
         };
     }

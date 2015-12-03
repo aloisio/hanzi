@@ -11,7 +11,7 @@ import org.galobis.hanzi.database.unihan.UnihanReader;
 
 public class DatabasePopulator {
     private static final String[] DDL_STATEMENTS = {
-            "CREATE TABLE hanzi (codepoint INTEGER NOT NULL, PRIMARY KEY (codepoint))",
+            "CREATE TABLE hanzi (codepoint INTEGER NOT NULL, PRIMARY KEY (codepoint), definition LONG VARCHAR)",
             "CREATE TABLE pinyin (id INTEGER NOT NULL, PRIMARY KEY (id))",
             "CREATE TABLE reading (id INTEGER NOT NULL, PRIMARY KEY (id))",
             "CREATE TABLE simplified (id INTEGER NOT NULL, PRIMARY KEY (id))",
