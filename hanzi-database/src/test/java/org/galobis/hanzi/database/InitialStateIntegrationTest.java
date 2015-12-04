@@ -34,7 +34,7 @@ public class InitialStateIntegrationTest {
 
     private static final String SQL_COLUMN_HANZI = "SELECT %s FROM hanzi WHERE codepoint IN (%d, %d, %d)";
 
-    private static final String SQL_COUNT_HANZI = "SELECT COUNT(%d) FROM hanzi";
+    private static final String SQL_COUNT_HANZI = "SELECT COUNT(%s) FROM hanzi";
 
     private static Connection connection;
 
