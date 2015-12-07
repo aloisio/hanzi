@@ -1,67 +1,36 @@
 package org.galobis.hanzi.model;
 
-import java.text.Normalizer;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import static org.galobis.hanzi.util.UnicodeUtilities.decomposition;
+
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Pinyin {
 
-    private static char COMBINING_ACUTE_ACCENT = 0x301;
+    private static String DECOMPOSED_E_WITH_CIRCUMFLEX = decomposition("ê");
 
-    private static char COMBINING_CARON = 0x30C;
+    private static String DECOMPOSED_U_WITH_DIAERESIS = decomposition("ü");
 
-    private static char COMBINING_DIAERESIS = 0x308;
-
-    private static char COMBINING_GRAVE_ACCENT = 0x300;
-
-    private static char COMBINING_MACRON = 0x304;
-
-    private static Map<Character, Integer> MARKS_TO_TONES = new LinkedHashMap<Character, Integer>() {
-        private static final long serialVersionUID = 1L;
-
-        {
-            put(COMBINING_MACRON, 1);
-            put(COMBINING_ACUTE_ACCENT, 2);
-            put(COMBINING_CARON, 3);
-            put(COMBINING_GRAVE_ACCENT, 4);
-        }
-    };
-
-    private static Map<Integer, String> TONES_TO_MARKS = new LinkedHashMap<Integer, String>() {
-        private static final long serialVersionUID = 1L;
-
-        {
-            put(1, String.valueOf(COMBINING_MACRON));
-            put(2, String.valueOf(COMBINING_ACUTE_ACCENT));
-            put(3, String.valueOf(COMBINING_CARON));
-            put(4, String.valueOf(COMBINING_GRAVE_ACCENT));
-            put(5, "");
-        }
-    };
-
-    private final String pronunciation;
+    private static final Pattern NUMBERED_TONE = Pattern.compile("^(.+)([1-5])$");
 
     private final String syllable;
 
-    private final Integer tone;
+    private final Tone tone;
 
-    public Pinyin(String pronunciation) {
-        String decomposed = decompose(pronunciation);
-        this.syllable = getSyllable(decomposed);
-        this.tone = getTone(decomposed);
-        this.pronunciation = compose(decomposed);
-    }
+    private final String pronunciation;
 
-    public Pinyin(String syllable, Integer tone) {
-        this(compose(syllable + TONES_TO_MARKS.get(tone)));
+    private Pinyin(String syllable, Tone tone) {
+        this.syllable = syllable;
+        this.tone = tone;
+        this.pronunciation = tone.apply(syllable);
     }
 
     public String syllable() {
         return syllable;
     }
 
-    public Integer tone() {
+    public Tone tone() {
         return tone;
     }
 
@@ -88,31 +57,23 @@ public class Pinyin {
         return pronunciation;
     }
 
-    private static String compose(String pronunciation) {
-        return Normalizer.normalize(pronunciation, Normalizer.Form.NFC).toLowerCase();
-    }
-
-    private static String decompose(String pronunciation) {
-        return Normalizer.normalize(pronunciation, Normalizer.Form.NFD).toLowerCase();
+    public static Pinyin pinyin(String pronunciation) {
+        String normalizedPronunciation = decomposition(pronunciation).toLowerCase();
+        Matcher numberedToneMatcher = NUMBERED_TONE.matcher(normalizedPronunciation);
+        if (numberedToneMatcher.matches()) {
+            Integer toneNumber = Integer.valueOf(numberedToneMatcher.group(2));
+            return new Pinyin(getSyllable(numberedToneMatcher.group(1)),
+                    Tone.values()[toneNumber - 1]);
+        } else {
+            return new Pinyin(getSyllable(normalizedPronunciation),
+                    Tone.forMarkedSyllable(normalizedPronunciation));
+        }
     }
 
     private static String getSyllable(String normalized) {
-        if (normalized.indexOf(COMBINING_DIAERESIS) < 0) {
-            return removeDiacritics(normalized);
-        }
-        return removeDiacritics(normalized).replace('u', 'ü');
-    }
-
-    private static Integer getTone(String normalized) {
-        for (Character mark : MARKS_TO_TONES.keySet()) {
-            if (normalized.indexOf(mark) >= 0) {
-                return MARKS_TO_TONES.get(mark);
-            }
-        }
-        return 5;
-    }
-
-    private static String removeDiacritics(String normalized) {
-        return normalized.replaceAll("\\p{Block=CombiningDiacriticalMarks}", "");
+        return normalized
+                .replace(DECOMPOSED_U_WITH_DIAERESIS, "ü")
+                .replace(DECOMPOSED_E_WITH_CIRCUMFLEX, "ê")
+                .replaceAll("\\p{Block=CombiningDiacriticalMarks}", "");
     }
 }

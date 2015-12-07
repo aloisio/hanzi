@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>Keys: All invalid pinyin readings found in Unihan. Values:
+		canonical numbered tone representation.</comment>
+	<entry key="choù">chou4</entry>
+	<entry key="choú">chou2</entry>
+	<entry key="choū">chou1</entry>
+	<entry key="choǔ">chou3</entry>
+	<entry key="coù">cou4</entry>
+	<entry key="doù">dou4</entry>
+	<entry key="doū">dou1</entry>
+	<entry key="doǔ">dou3</entry>
+	<entry key="dùi">dui4</entry>
+	<entry key="foǔ">fou3</entry>
+	<entry key="goù">gou4</entry>
+	<entry key="goū">gou1</entry>
+	<entry key="goǔ">gou3</entry>
+	<entry key="hoù">hou4</entry>
+	<entry key="hoú">hou2</entry>
+	<entry key="hoǔ">hou3</entry>
+	<entry key="koù">kou4</entry>
+	<entry key="koǔ">kou3</entry>
+	<entry key="loù">lou4</entry>
+	<entry key="loú">lou2</entry>
+	<entry key="loǔ">lou3</entry>
+	<entry key="moú">mou2</entry>
+	<entry key="moǔ">mou3</entry>
+	<entry key="ng̀">ng4</entry>
+	<entry key="nǧ">ng3</entry>
+	<entry key="nǵ">ng2</entry>
+	<entry key="oū">ou1</entry>
+	<entry key="oǔ">ou3</entry>
+	<entry key="poū">pou1</entry>
+	<entry key="roù">rou4</entry>
+	<entry key="roú">rou2</entry>
+	<entry key="shoù">shou4</entry>
+	<entry key="shoū">shou1</entry>
+	<entry key="shoǔ">shou3</entry>
+	<entry key="soū">sou1</entry>
+	<entry key="toù">tou4</entry>
+	<entry key="toú">tou2</entry>
+	<entry key="toū">tou1</entry>
+	<entry key="yoù">you4</entry>
+	<entry key="yoú">you2</entry>
+	<entry key="yoū">you1</entry>
+	<entry key="yoǔ">you3</entry>
+	<entry key="zhoù">zhou4</entry>
+	<entry key="zhoú">zhou2</entry>
+	<entry key="zhoū">zhou1</entry>
+	<entry key="zoù">zou4</entry>
+	<entry key="zoǔ">zou3</entry>
+</properties>
