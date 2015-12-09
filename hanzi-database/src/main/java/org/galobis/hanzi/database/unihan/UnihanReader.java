@@ -27,7 +27,7 @@ public class UnihanReader {
                 if (streamReader.isStartElement() && streamReader.getLocalName().equals("char")) {
                     Integer codePoint = Integer.valueOf(streamReader.getAttributeValue(null, "cp"), 16);
                     String definition = streamReader.getAttributeValue(null, "kDefinition");
-                    Hanzi hanzi = new Hanzi(codePoint, definition);
+                    Hanzi hanzi = new Hanzi.Builder(codePoint).definition(definition).build();
                     visitor.visit(hanzi);
                 }
                 streamReader.next();

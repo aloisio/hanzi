@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-	<comment>Keys: All nvalid pinyin readings found in Unihan. Values:
+	<comment>Keys: All valid pinyin readings found in Unihan. Values:
 		canonical numbered tone representation.</comment>
 	<entry key="a">a5</entry>
 	<entry key="ai">ai5</entry>

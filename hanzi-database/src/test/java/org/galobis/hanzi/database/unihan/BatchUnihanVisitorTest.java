@@ -50,10 +50,10 @@ public class BatchUnihanVisitorTest {
 
     @Test
     public void should_execute_batch_periodically() throws Exception {
-        visitor.visit(new Hanzi(0x3400));
-        visitor.visit(new Hanzi(0x3401));
-        visitor.visit(new Hanzi(0x3402));
-        visitor.visit(new Hanzi(0x3403));
+        visitor.visit(new Hanzi.Builder(0x3400).build());
+        visitor.visit(new Hanzi.Builder(0x3401).build());
+        visitor.visit(new Hanzi.Builder(0x3402).build());
+        visitor.visit(new Hanzi.Builder(0x3403).build());
         visitor.close();
         new Verifications() {
             {
@@ -69,9 +69,9 @@ public class BatchUnihanVisitorTest {
 
     @Test
     public void should_execute_batch_on_close_if_remaining_batches() throws Exception {
-        visitor.visit(new Hanzi(0x3400));
-        visitor.visit(new Hanzi(0x3401));
-        visitor.visit(new Hanzi(0x3401));
+        visitor.visit(new Hanzi.Builder(0x3400).build());
+        visitor.visit(new Hanzi.Builder(0x3401).build());
+        visitor.visit(new Hanzi.Builder(0x3401).build());
         visitor.close();
         new Verifications() {
             {

@@ -51,7 +51,7 @@ public class UnihanReaderTest {
                 0x2B740, 0x2B81D, 0xF900, 0xFAD9)) {
             new Verifications() {
                 {
-                    mockedVisitor.visit(new Hanzi(codePoint));
+                    mockedVisitor.visit(new Hanzi.Builder(codePoint).build());
                 }
             };
         }
@@ -73,7 +73,9 @@ public class UnihanReaderTest {
         new Verifications() {
             {
                 mockedVisitor.visit(withArgThat(is(sameBeanAs(
-                        new Hanzi("漢".codePointAt(0), "the Chinese people, Chinese language")))));
+                        new Hanzi.Builder("漢".codePointAt(0))
+                                .definition("the Chinese people, Chinese language")
+                                .build()))));
             }
         };
     }

@@ -31,7 +31,7 @@ public class BatchUnihanVisitor implements UnihanVisitor {
     @Override
     public void visit(Hanzi hanzi) throws Exception {
         statement.setInt(1, hanzi.codePoint());
-        statement.setString(2, hanzi.defintion());
+        statement.setString(2, hanzi.definition());
         statement.addBatch();
         batchCount++;
         if ((batchCount % batchSize) == 0) {
