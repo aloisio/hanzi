@@ -40,21 +40,7 @@ public class ReadingParser {
     }
 
     private static class MandarinParser implements ReadingCategoryParser {
-
-        @Override
-        public List<List<Pinyin>> parse(String contents) {
-            if (contents.isEmpty()) {
-                return Collections.emptyList();
-            }
-            return Arrays.asList(
-                    Arrays.stream(contents.split(" "))
-                            .map(Pinyin::pinyin)
-                            .collect(Collectors.toList()));
-        }
-    }
-
-    private static class HanyuPinluParser implements ReadingCategoryParser {
-        private static final Pattern READING = Pattern.compile("^(.+)\\([0-9]+\\)$");
+        private static final Pattern READING = Pattern.compile("^(.+)$");
 
         protected Pattern getPattern() {
             return READING;
@@ -76,7 +62,16 @@ public class ReadingParser {
         }
     }
 
-    private static class XHC1983Parser extends HanyuPinluParser {
+    private static class HanyuPinluParser extends MandarinParser {
+        private static final Pattern READING = Pattern.compile("^(.+)\\([0-9]+\\)$");
+
+        @Override
+        protected Pattern getPattern() {
+            return READING;
+        }
+    }
+
+    private static class XHC1983Parser extends MandarinParser {
         private static final Pattern READING = Pattern
                 .compile("^(?:[0-9]{4}\\.[0-9]{3}\\*?,)*[0-9]{4}\\.[0-9]{3}\\*?:(.*)$");
 
