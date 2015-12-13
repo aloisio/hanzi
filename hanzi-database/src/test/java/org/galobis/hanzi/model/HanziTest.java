@@ -1,5 +1,6 @@
 package org.galobis.hanzi.model;
 
+import static java.util.Arrays.asList;
 import static org.galobis.hanzi.model.Pinyin.pinyin;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -67,7 +68,7 @@ public class HanziTest {
     public void should_allow_passing_parameters_to_builder() {
         Hanzi hanzi = new Hanzi.Builder(0x82F9)
                 .definition("artemisia; duckweed; apple")
-                .readings(pinyin("ping2"), pinyin("peng1"))
+                .readings("ping2", "peng1")
                 .build();
         assertThat(hanzi.codePoint(), is(equalTo(0x82F9)));
         assertThat(hanzi.definition(), is("artemisia; duckweed; apple"));
@@ -78,5 +79,14 @@ public class HanziTest {
         } catch (Exception expected) {
             // Expected
         }
+    }
+
+    @Test
+    public void should_allow_passing_Pinyin_list_to_builder() {
+        Hanzi hanzi = new Hanzi.Builder(0x4E50)
+                .definition("happy, glad; enjoyable; music")
+                .readings(asList(pinyin("le4"), pinyin("yue4")))
+                .build();
+        assertThat(hanzi.readings(), contains(pinyin("le4"), pinyin("yue4")));
     }
 }

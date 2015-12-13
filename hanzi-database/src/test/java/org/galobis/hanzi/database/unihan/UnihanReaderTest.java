@@ -41,16 +41,38 @@ public class UnihanReaderTest {
 
     private List<Hanzi> actualHanzi = new ArrayList<>();
 
-    private List<Hanzi> expectedHanzi = Arrays.asList(
-            new Hanzi.Builder(0x3400).definition("(same as U+4E18 丘) hillock or mound").build(),
-            new Hanzi.Builder(0x4DB5).definition("(same as U+7B8E 箎) a bamboo flute with seven holes").build(),
-            new Hanzi.Builder(0x4E00).definition("one; a, an; alone").build(),
-            new Hanzi.Builder(0x6F22).definition("the Chinese people, Chinese language").build(),
-            new Hanzi.Builder(0x9FD5).definition("Danio chrysotaeniata").build(),
+    private static final List<Hanzi> EXPECTED_HANZI = Arrays.asList(
+            new Hanzi.Builder(0x3400)
+                    .definition("(same as U+4E18 丘) hillock or mound")
+                    .readings("qiu1")
+                    .build(),
+            new Hanzi.Builder(0x4DB5)
+                    .definition("(same as U+7B8E 箎) a bamboo flute with seven holes")
+                    .readings("chi2")
+                    .build(),
+            new Hanzi.Builder(0x4E00)
+                    .definition("one; a, an; alone")
+                    .readings("yi1", "yi2", "yi4")
+                    .build(),
+            new Hanzi.Builder(0x6F22)
+                    .definition("the Chinese people, Chinese language")
+                    .readings("han4", "tan1")
+                    .build(),
+            new Hanzi.Builder(0x9F4A)
+                    .definition("even, uniform, of equal length")
+                    .readings("qi2", "ji4", "zhai1", "ji1", "zi1", "jian3")
+                    .build(),
+            new Hanzi.Builder(0x9FD5)
+                    .definition("Danio chrysotaeniata")
+                    .readings("dan1")
+                    .build(),
             new Hanzi.Builder(0xF900).definition("how? what?").build(),
             new Hanzi.Builder(0xFAD9).build(),
-            new Hanzi.Builder(0x20000).definition("the sound made by breathing in; oh! "
-                    + "(cf. U+311B BOPOMOFO LETTER O, which is derived from this character)").build(),
+            new Hanzi.Builder(0x20000)
+                    .definition("the sound made by breathing in; oh! "
+                            + "(cf. U+311B BOPOMOFO LETTER O, which is derived from this character)")
+                    .readings("he1")
+                    .build(),
             new Hanzi.Builder(0x2A6D6).build(),
             new Hanzi.Builder(0x2A700).build(),
             new Hanzi.Builder(0x2B734).build(),
@@ -83,7 +105,7 @@ public class UnihanReaderTest {
 
         Map<Hanzi, Hanzi> actual = new HashMap<>();
         actualHanzi.forEach(h -> actual.put(h, h));
-        for (Hanzi expected : expectedHanzi) {
+        for (Hanzi expected : EXPECTED_HANZI) {
             assertThat(actual.get(expected), is(sameBeanAs(expected)));
         }
     }

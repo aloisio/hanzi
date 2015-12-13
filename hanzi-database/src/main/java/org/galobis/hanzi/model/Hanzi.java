@@ -2,8 +2,10 @@ package org.galobis.hanzi.model;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Hanzi {
     private final Integer codePoint;
@@ -58,8 +60,12 @@ public class Hanzi {
             return this;
         }
 
-        public Builder readings(Pinyin... pinyin) {
-            this.readings = Arrays.asList(pinyin);
+        public Builder readings(String... pinyin) {
+            return readings(Arrays.stream(pinyin).map(Pinyin::pinyin).collect(Collectors.toList()));
+        }
+
+        public Builder readings(List<Pinyin> pinyin) {
+            this.readings = Collections.unmodifiableList(pinyin);
             return this;
         }
 
