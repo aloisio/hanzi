@@ -143,7 +143,7 @@ public enum Tone {
             return compositionSyllable;
         }
         IntConsumer marker = new ToneMarker(compositionSyllable, mark());
-        compositionSyllable.chars().sequential().forEach(marker);
+        compositionSyllable.codePoints().sequential().forEach(marker);
         return marker.toString();
     }
 

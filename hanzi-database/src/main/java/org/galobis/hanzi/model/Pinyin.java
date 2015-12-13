@@ -8,9 +8,13 @@ import java.util.regex.Pattern;
 
 public class Pinyin {
 
-    private static String DECOMPOSED_E_WITH_CIRCUMFLEX = decomposition("ê");
+    private static final String COMPOSITE_U_WITH_DIAERESIS = "ü";
 
-    private static String DECOMPOSED_U_WITH_DIAERESIS = decomposition("ü");
+    private static final String COMPOSITE_E_WITH_CIRCUMFLEX = "ê";
+
+    private static final String DECOMPOSED_E_WITH_CIRCUMFLEX = decomposition(COMPOSITE_E_WITH_CIRCUMFLEX);
+
+    private static final String DECOMPOSED_U_WITH_DIAERESIS = decomposition(COMPOSITE_U_WITH_DIAERESIS);
 
     private static final Pattern NUMBERED_TONE = Pattern.compile("^(.+)([1-5])$");
 
@@ -72,8 +76,8 @@ public class Pinyin {
 
     private static String getSyllable(String normalized) {
         return normalized
-                .replace(DECOMPOSED_U_WITH_DIAERESIS, "ü")
-                .replace(DECOMPOSED_E_WITH_CIRCUMFLEX, "ê")
+                .replace(DECOMPOSED_U_WITH_DIAERESIS, COMPOSITE_U_WITH_DIAERESIS)
+                .replace(DECOMPOSED_E_WITH_CIRCUMFLEX, COMPOSITE_E_WITH_CIRCUMFLEX)
                 .replaceAll("\\p{Block=CombiningDiacriticalMarks}", "");
     }
 }
