@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
-import org.galobis.hanzi.database.unihan.BatchUnihanVisitor;
+import org.galobis.hanzi.database.unihan.HanziBatchInsertVisitor;
 import org.galobis.hanzi.database.unihan.UnihanReader;
 
 public class DatabasePopulator {
@@ -38,7 +38,7 @@ public class DatabasePopulator {
     }
 
     private static void populateTables(Connection connection) throws Exception, IOException {
-        new UnihanReader(new BatchUnihanVisitor(connection)).read();
+        new UnihanReader(new HanziBatchInsertVisitor(connection)).read();
     }
 
     private static void shutdownDatabase(String connectionURL) {

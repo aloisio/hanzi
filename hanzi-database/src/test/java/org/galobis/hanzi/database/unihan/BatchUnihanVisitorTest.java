@@ -29,11 +29,22 @@ public class BatchUnihanVisitorTest {
     public void initializeVisitor() throws Exception {
         new Expectations() {
             {
-                connection.prepareStatement(withArgThat(containsString("hanzi")));
+                connection.prepareStatement(withArgThat(containsString("test")));
                 result = statement;
             }
         };
-        visitor = new BatchUnihanVisitor(connection, 2);
+        visitor = new BatchUnihanVisitor(connection, 2) {
+
+            @Override
+            protected String getSQL() {
+                return "test";
+            }
+
+            @Override
+            protected void setParameters(PreparedStatement statement, Hanzi hanzi) throws Exception {
+                return;
+            }
+        };
     }
 
     @After
