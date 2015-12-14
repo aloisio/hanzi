@@ -1,5 +1,13 @@
 package org.galobis.hanzi.database.unihan;
 
+import static org.galobis.hanzi.database.unihan.UnihanConstants.CHARACTER;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.CODE_POINT;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.DEFINITION;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.HANYU_PINLU;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.HANYU_PINYIN;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.MANDARIN;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.XHC1983;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -12,15 +20,6 @@ import org.galobis.hanzi.model.Pinyin;
 import org.galobis.hanzi.util.BordaCounter;
 
 public class UnihanReader {
-
-    private static final String XHC1983 = "kXHC1983";
-
-    private static final String HANYU_PINYIN = "kHanyuPinyin";
-
-    private static final String HANYU_PINLU = "kHanyuPinlu";
-
-    private static final String MANDARIN = "kMandarin";
-
     private final UnihanVisitor visitor;
 
     private final InputStream input;
@@ -41,9 +40,9 @@ public class UnihanReader {
     public void read() throws Exception {
         try (UnihanXMLStreamReader streamReader = new UnihanXMLStreamReader(input)) {
             while (streamReader.hasNext()) {
-                if (streamReader.isStartElement() && streamReader.getLocalName().equals("char")) {
-                    Integer codePoint = Integer.valueOf(streamReader.getAttributeValue(null, "cp"), 16);
-                    String definition = streamReader.getAttributeValue(null, "kDefinition");
+                if (streamReader.isStartElement() && streamReader.getLocalName().equals(CHARACTER)) {
+                    Integer codePoint = Integer.valueOf(streamReader.getAttributeValue(null, CODE_POINT), 16);
+                    String definition = streamReader.getAttributeValue(null, DEFINITION);
                     Hanzi hanzi = new Hanzi.Builder(codePoint)
                             .definition(definition)
                             .readings(getReadings(streamReader))

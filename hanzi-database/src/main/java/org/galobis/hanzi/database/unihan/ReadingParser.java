@@ -1,5 +1,9 @@
 package org.galobis.hanzi.database.unihan;
 
+import static org.galobis.hanzi.database.unihan.UnihanConstants.HANYU_PINLU;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.HANYU_PINYIN;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.MANDARIN;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.XHC1983;
 import static org.galobis.hanzi.model.Pinyin.pinyin;
 
 import java.util.ArrayList;
@@ -85,10 +89,10 @@ public class ReadingParser {
         private static final long serialVersionUID = 1L;
 
         {
-            put("kHanyuPinyin", new HanyuPinyinParser());
-            put("kMandarin", new MandarinParser());
-            put("kHanyuPinlu", new HanyuPinluParser());
-            put("kXHC1983", new XHC1983Parser());
+            put(HANYU_PINYIN, new HanyuPinyinParser());
+            put(MANDARIN, new MandarinParser());
+            put(HANYU_PINLU, new HanyuPinluParser());
+            put(XHC1983, new XHC1983Parser());
         }
     };
 
