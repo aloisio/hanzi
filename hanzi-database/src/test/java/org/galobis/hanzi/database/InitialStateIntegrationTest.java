@@ -36,6 +36,8 @@ public class InitialStateIntegrationTest {
 
     private static final String SQL_COUNT_HANZI = "SELECT COUNT(%s) FROM hanzi";
 
+    private static final String SQL_COLUMN_PINYIN = "SELECT trim(syllable) || trim(char(tone)) FROM pinyin WHERE syllable='ma'";
+
     private static Connection connection;
 
     private static int totalUnihanCodePoints = 0;
@@ -79,6 +81,12 @@ public class InitialStateIntegrationTest {
                 containsInAnyOrder("dream; visionary; wishful",
                         "variant of 羇 U+7F87, inn; to lodge; to travel",
                         "䃟頭窰, a place in Hong Kong"));
+    }
+
+    @Test
+    public void database_should_contain_pinyin_pronunciations() throws Exception {
+        List<String> pinyin = asList(connection, SQL_COLUMN_PINYIN, String.class);
+        assertThat(pinyin, containsInAnyOrder("ma1", "ma2", "ma3", "ma4", "ma5"));
     }
 
     @Test

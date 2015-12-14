@@ -6,13 +6,15 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
+import org.galobis.hanzi.database.unihan.CompositeUnihanVisitor;
 import org.galobis.hanzi.database.unihan.HanziBatchInsertVisitor;
+import org.galobis.hanzi.database.unihan.PinyinBatchInsertVisitor;
 import org.galobis.hanzi.database.unihan.UnihanReader;
 
 public class DatabasePopulator {
     private static final String[] DDL_STATEMENTS = {
             "CREATE TABLE hanzi (codepoint INTEGER NOT NULL, PRIMARY KEY (codepoint), definition LONG VARCHAR)",
-            "CREATE TABLE pinyin (id INTEGER NOT NULL, PRIMARY KEY (id))",
+            "CREATE TABLE pinyin (id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), PRIMARY KEY (id), syllable VARCHAR(10) NOT NULL, tone INTEGER NOT NULL, UNIQUE(syllable, tone))",
             "CREATE TABLE reading (id INTEGER NOT NULL, PRIMARY KEY (id))",
             "CREATE TABLE simplified (id INTEGER NOT NULL, PRIMARY KEY (id))",
             "CREATE TABLE traditional (id INTEGER NOT NULL, PRIMARY KEY (id))"
@@ -38,7 +40,9 @@ public class DatabasePopulator {
     }
 
     private static void populateTables(Connection connection) throws Exception, IOException {
-        new UnihanReader(new HanziBatchInsertVisitor(connection)).read();
+        new UnihanReader(new CompositeUnihanVisitor(
+                new HanziBatchInsertVisitor(connection),
+                new PinyinBatchInsertVisitor(connection))).read();
     }
 
     private static void shutdownDatabase(String connectionURL) {
