@@ -41,8 +41,8 @@ public class BatchUnihanVisitorTest {
             }
 
             @Override
-            protected void setParameters(PreparedStatement statement, Hanzi hanzi) throws Exception {
-                return;
+            protected void addBatches(PreparedStatement statement, Hanzi hanzi) throws Exception {
+                statement.addBatch();
             }
         };
     }

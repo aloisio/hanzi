@@ -15,8 +15,9 @@ public class HanziBatchInsertVisitor extends BatchUnihanVisitor {
         return "INSERT INTO hanzi(codepoint, definition) VALUES (?, ?)";
     }
 
-    protected void setParameters(PreparedStatement statement, Hanzi hanzi) throws Exception {
+    protected void addBatches(PreparedStatement statement, Hanzi hanzi) throws Exception {
         statement.setInt(1, hanzi.codePoint());
         statement.setString(2, hanzi.definition());
+        statement.addBatch();
     }
 }
