@@ -9,15 +9,30 @@ import org.apache.derby.jdbc.EmbeddedDriver;
 import org.galobis.hanzi.database.unihan.CompositeUnihanVisitor;
 import org.galobis.hanzi.database.unihan.HanziBatchInsertVisitor;
 import org.galobis.hanzi.database.unihan.PinyinBatchInsertVisitor;
+import org.galobis.hanzi.database.unihan.ReadingBatchInsertVisitor;
 import org.galobis.hanzi.database.unihan.UnihanReader;
 
 public class DatabasePopulator {
     private static final String[] DDL_STATEMENTS = {
-            "CREATE TABLE hanzi (codepoint INTEGER NOT NULL, PRIMARY KEY (codepoint), definition LONG VARCHAR)",
-            "CREATE TABLE pinyin (id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), PRIMARY KEY (id), syllable VARCHAR(10) NOT NULL, tone INTEGER NOT NULL, UNIQUE(syllable, tone))",
-            "CREATE TABLE reading (id INTEGER NOT NULL, PRIMARY KEY (id))",
-            "CREATE TABLE simplified (id INTEGER NOT NULL, PRIMARY KEY (id))",
-            "CREATE TABLE traditional (id INTEGER NOT NULL, PRIMARY KEY (id))"
+            "CREATE TABLE hanzi ("
+                    + "codepoint INTEGER NOT NULL, definition LONG VARCHAR, "
+                    + "PRIMARY KEY (codepoint))",
+            "CREATE TABLE pinyin ("
+                    + "id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                    + "syllable VARCHAR(10) NOT NULL, tone INTEGER NOT NULL, "
+                    + "PRIMARY KEY (id), UNIQUE(syllable, tone))",
+            "CREATE TABLE reading ("
+                    + "id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                    + "codepoint INTEGER NOT NULL, pinyin_id INTEGER NOT NULL, ordinal INTEGER NOT NULL, "
+                    + "PRIMARY KEY (id), UNIQUE(codepoint, pinyin_id, ordinal), "
+                    + "FOREIGN KEY (codepoint) REFERENCES hanzi (codepoint), "
+                    + "FOREIGN KEY (pinyin_id) REFERENCES pinyin (id))",
+            "CREATE TABLE simplified ("
+                    + "id INTEGER NOT NULL, "
+                    + "PRIMARY KEY (id))",
+            "CREATE TABLE traditional ("
+                    + "id INTEGER NOT NULL, "
+                    + "PRIMARY KEY (id))"
     };
 
     public static void main(String[] args) throws Exception {
@@ -43,6 +58,7 @@ public class DatabasePopulator {
         new UnihanReader(new CompositeUnihanVisitor(
                 new HanziBatchInsertVisitor(connection),
                 new PinyinBatchInsertVisitor(connection))).read();
+        new UnihanReader(new ReadingBatchInsertVisitor(connection)).read();
     }
 
     private static void shutdownDatabase(String connectionURL) {

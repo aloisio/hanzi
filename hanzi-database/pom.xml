@@ -53,6 +53,9 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-failsafe-plugin</artifactId>
+				<configuration>
+					<groups>${junit.category.integration}</groups>
+				</configuration>
 				<executions>
 					<execution>
 						<id>integration-test</id>
@@ -60,9 +63,8 @@
 							<goal>integration-test</goal>
 						</goals>
 						<configuration>
-							<groups>${junit.category.integration}</groups>
 							<includes>
-								<include>**/*.class</include>
+								<include>**/*.java</include>
 							</includes>
 						</configuration>
 					</execution>

@@ -36,7 +36,12 @@ public class InitialStateIntegrationTest {
 
     private static final String SQL_COUNT_HANZI = "SELECT COUNT(%s) FROM hanzi";
 
-    private static final String SQL_COLUMN_PINYIN = "SELECT trim(syllable) || trim(char(tone)) FROM pinyin WHERE syllable='ma'";
+    private static final String SQL_COLUMN_PINYIN = "SELECT TRIM(syllable) || TRIM(CHAR(tone)) "
+            + "FROM pinyin WHERE syllable='ma'";
+
+    private static final String SQL_COLUMN_READING = "SELECT TRIM(syllable) || TRIM(CHAR(tone)) "
+            + "FROM reading, pinyin WHERE pinyin.id = pinyin_id "
+            + "AND codepoint = %d ORDER BY ordinal";
 
     private static Connection connection;
 
@@ -84,18 +89,26 @@ public class InitialStateIntegrationTest {
     }
 
     @Test
-    public void database_should_contain_pinyin_pronunciations() throws Exception {
-        List<String> pinyin = asList(connection, SQL_COLUMN_PINYIN, String.class);
-        assertThat(pinyin, containsInAnyOrder("ma1", "ma2", "ma3", "ma4", "ma5"));
-    }
-
-    @Test
     public void database_should_contain_all_Unihan_definitions() throws Exception {
         try (ResultSet definitionCount = connection.prepareCall(
                 String.format(SQL_COUNT_HANZI, DEFINITION)).executeQuery()) {
             definitionCount.next();
             assertThat(definitionCount.getInt(1), is(equalTo(totalUnihanDefinitions)));
         }
+    }
+
+    @Test
+    public void database_should_contain_pinyin_pronunciations() throws Exception {
+        List<String> pinyin = asList(connection, SQL_COLUMN_PINYIN, String.class);
+        assertThat(pinyin, containsInAnyOrder("ma1", "ma2", "ma3", "ma4", "ma5"));
+    }
+
+    @Test
+    public void database_should_contain_readings_of_a_hanzi() throws Exception {
+        List<String> readings = asList(connection,
+                String.format(SQL_COLUMN_READING, "卤".codePointAt(0)),
+                String.class);
+        assertThat(readings, contains("lu3", "xi1"));
     }
 
     public static Integer asInt(String hanzi) {
