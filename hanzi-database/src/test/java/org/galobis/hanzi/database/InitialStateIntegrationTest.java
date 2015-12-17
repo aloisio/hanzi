@@ -55,7 +55,7 @@ public class InitialStateIntegrationTest {
     private static final String SQL_COUNT_TRADITIONAL = "SELECT COUNT(*) FROM traditional";
 
     private static final String SQL_COLUMN_SIMPLIFIED = "SELECT simplified "
-            + "FROM simplified WHERE codepoint = %d ORDER BY ordinal";
+            + "FROM simplified WHERE codepoint = %d ORDER BY simplified";
 
     private static final String SQL_COLUMN_TRADITIONAL = "SELECT traditional "
             + "FROM traditional WHERE codepoint = %d ORDER BY traditional";

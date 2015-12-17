@@ -31,8 +31,8 @@ public class DatabasePopulator {
                     + "FOREIGN KEY (pinyin_id) REFERENCES pinyin (id))",
             "CREATE TABLE simplified ("
                     + "id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-                    + "codepoint INTEGER NOT NULL, simplified INTEGER NOT NULL, ordinal INTEGER NOT NULL, "
-                    + "PRIMARY KEY (id), UNIQUE(codepoint, simplified, ordinal), "
+                    + "codepoint INTEGER NOT NULL, simplified INTEGER NOT NULL, "
+                    + "PRIMARY KEY (id), UNIQUE(codepoint, simplified), "
                     + "FOREIGN KEY (codepoint) REFERENCES hanzi (codepoint), "
                     + "FOREIGN KEY (simplified) REFERENCES hanzi (codepoint))",
             "CREATE TABLE traditional ("
