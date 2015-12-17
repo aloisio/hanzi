@@ -60,6 +60,12 @@ public class UnihanReaderTest {
                     .definition("one; a, an; alone")
                     .readings("yi1", "yi2", "yi4")
                     .build(),
+            new Hanzi.Builder(0x540E)
+                    .definition("queen, empress, sovereign; (simp. for 後) behind, rear, after")
+                    .readings("hou4")
+                    .simplified(0x540E)
+                    .traditional(0x540E, 0x5F8C)
+                    .build(),
             new Hanzi.Builder(0x6F22)
                     .definition("the Chinese people, Chinese language")
                     .readings("han4", "tan1")
