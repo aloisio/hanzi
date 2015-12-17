@@ -16,6 +16,8 @@ public class Hanzi {
 
     private final Collection<Hanzi> simplified;
 
+    private final Collection<Hanzi> traditional;
+
     public Integer codePoint() {
         return codePoint;
     }
@@ -30,6 +32,10 @@ public class Hanzi {
 
     public Collection<Hanzi> simplified() {
         return simplified;
+    }
+
+    public Collection<Hanzi> traditional() {
+        return traditional;
     }
 
     @Override
@@ -63,6 +69,8 @@ public class Hanzi {
 
         private List<Hanzi> simplified = Arrays.asList();
 
+        private List<Hanzi> traditional = Arrays.asList();
+
         public Builder(Integer codePoint) {
             this.codePoint = codePoint;
         }
@@ -91,10 +99,20 @@ public class Hanzi {
         }
 
         public Builder simplified(Integer... codepoints) {
-            simplified(Arrays.stream(codepoints)
+            return simplified(Arrays.stream(codepoints)
                     .map(c -> new Hanzi.Builder(c).build())
                     .toArray(Hanzi[]::new));
+        }
+
+        public Builder traditional(Hanzi... hanzi) {
+            this.traditional = Arrays.asList(hanzi);
             return this;
+        }
+
+        public Builder traditional(Integer... codepoints) {
+            return traditional(Arrays.stream(codepoints)
+                    .map(c -> new Hanzi.Builder(c).build())
+                    .toArray(Hanzi[]::new));
         }
     }
 
@@ -103,5 +121,6 @@ public class Hanzi {
         definition = builder.definition;
         readings = builder.readings;
         simplified = builder.simplified;
+        traditional = builder.traditional;
     }
 }

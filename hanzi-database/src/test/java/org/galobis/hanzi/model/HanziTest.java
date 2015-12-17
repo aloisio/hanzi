@@ -99,4 +99,14 @@ public class HanziTest {
                 new Hanzi.Builder(0x949F).build(),
                 new Hanzi.Builder(0x953A).build()));
     }
+
+    @Test
+    public void should_allow_passing_traditional_variants_to_builder() {
+        Hanzi hanzi = new Hanzi.Builder(0x949F)
+                .traditional(0x937E, 0x9418)
+                .build();
+        assertThat(hanzi.traditional(), contains(
+                new Hanzi.Builder(0x937E).build(),
+                new Hanzi.Builder(0x9418).build()));
+    }
 }
