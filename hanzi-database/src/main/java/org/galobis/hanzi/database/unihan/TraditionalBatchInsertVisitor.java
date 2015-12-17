@@ -13,16 +13,14 @@ public class TraditionalBatchInsertVisitor extends BatchUnihanVisitor {
 
     @Override
     protected String getSQL() {
-        return "INSERT INTO traditional(codepoint, traditional, ordinal) VALUES (?,?,?)";
+        return "INSERT INTO traditional(codepoint, traditional) VALUES (?,?)";
     }
 
     @Override
     protected void addBatches(PreparedStatement statement, Hanzi hanzi) throws Exception {
-        int ordinal = 0;
         for (Hanzi traditional : hanzi.traditional()) {
             statement.setInt(1, hanzi.codePoint());
             statement.setInt(2, traditional.codePoint());
-            statement.setInt(3, ordinal++);
             statement.addBatch();
         }
     }

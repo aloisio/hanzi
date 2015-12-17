@@ -11,6 +11,7 @@ import org.galobis.hanzi.database.unihan.HanziBatchInsertVisitor;
 import org.galobis.hanzi.database.unihan.PinyinBatchInsertVisitor;
 import org.galobis.hanzi.database.unihan.ReadingBatchInsertVisitor;
 import org.galobis.hanzi.database.unihan.SimplifiedBatchInsertVisitor;
+import org.galobis.hanzi.database.unihan.TraditionalBatchInsertVisitor;
 import org.galobis.hanzi.database.unihan.UnihanReader;
 
 public class DatabasePopulator {
@@ -35,8 +36,11 @@ public class DatabasePopulator {
                     + "FOREIGN KEY (codepoint) REFERENCES hanzi (codepoint), "
                     + "FOREIGN KEY (simplified) REFERENCES hanzi (codepoint))",
             "CREATE TABLE traditional ("
-                    + "id INTEGER NOT NULL, "
-                    + "PRIMARY KEY (id))"
+                    + "id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                    + "codepoint INTEGER NOT NULL, traditional INTEGER NOT NULL, "
+                    + "PRIMARY KEY (id), UNIQUE(codepoint, traditional), "
+                    + "FOREIGN KEY (codepoint) REFERENCES hanzi (codepoint), "
+                    + "FOREIGN KEY (traditional) REFERENCES hanzi (codepoint))"
     };
 
     public static void main(String[] args) throws Exception {
@@ -64,7 +68,8 @@ public class DatabasePopulator {
                 new PinyinBatchInsertVisitor(connection))).read();
         new UnihanReader(new CompositeUnihanVisitor(
                 new ReadingBatchInsertVisitor(connection),
-                new SimplifiedBatchInsertVisitor(connection))).read();
+                new SimplifiedBatchInsertVisitor(connection),
+                new TraditionalBatchInsertVisitor(connection))).read();
     }
 
     private static void shutdownDatabase(String connectionURL) {
