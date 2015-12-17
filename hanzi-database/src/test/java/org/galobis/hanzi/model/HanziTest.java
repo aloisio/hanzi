@@ -89,4 +89,14 @@ public class HanziTest {
                 .build();
         assertThat(hanzi.readings(), contains(pinyin("le4"), pinyin("yue4")));
     }
+
+    @Test
+    public void should_allow_passing_simplified_variants_to_builder() {
+        Hanzi hanzi = new Hanzi.Builder(0x937E)
+                .simplified(0x949F, 0x953A)
+                .build();
+        assertThat(hanzi.simplified(), contains(
+                new Hanzi.Builder(0x949F).build(),
+                new Hanzi.Builder(0x953A).build()));
+    }
 }

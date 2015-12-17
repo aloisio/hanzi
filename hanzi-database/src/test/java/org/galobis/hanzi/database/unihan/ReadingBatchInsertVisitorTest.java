@@ -21,7 +21,7 @@ public class ReadingBatchInsertVisitorTest {
     @Injectable
     private PreparedStatement statement;
 
-    private ReadingBatchInsertVisitor visitor;
+    private UnihanVisitor visitor;
 
     @Before
     public void createVisitor() throws Exception {

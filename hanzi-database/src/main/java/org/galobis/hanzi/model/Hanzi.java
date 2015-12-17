@@ -14,12 +14,22 @@ public class Hanzi {
 
     private final Collection<Pinyin> readings;
 
+    private final Collection<Hanzi> simplified;
+
     public Integer codePoint() {
         return codePoint;
     }
 
     public String definition() {
         return definition;
+    }
+
+    public Collection<Pinyin> readings() {
+        return readings;
+    }
+
+    public Collection<Hanzi> simplified() {
+        return simplified;
     }
 
     @Override
@@ -51,6 +61,8 @@ public class Hanzi {
 
         private List<Pinyin> readings = Arrays.asList();
 
+        private List<Hanzi> simplified = Arrays.asList();
+
         public Builder(Integer codePoint) {
             this.codePoint = codePoint;
         }
@@ -72,15 +84,24 @@ public class Hanzi {
         public Hanzi build() {
             return new Hanzi(this);
         }
+
+        public Builder simplified(Hanzi... hanzi) {
+            this.simplified = Arrays.asList(hanzi);
+            return this;
+        }
+
+        public Builder simplified(Integer... codepoints) {
+            simplified(Arrays.stream(codepoints)
+                    .map(c -> new Hanzi.Builder(c).build())
+                    .toArray(Hanzi[]::new));
+            return this;
+        }
     }
 
     private Hanzi(Builder builder) {
         codePoint = builder.codePoint;
         definition = builder.definition;
         readings = builder.readings;
-    }
-
-    public Collection<Pinyin> readings() {
-        return readings;
+        simplified = builder.simplified;
     }
 }

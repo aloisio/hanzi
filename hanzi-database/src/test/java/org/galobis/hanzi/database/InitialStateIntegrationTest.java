@@ -1,7 +1,11 @@
 package org.galobis.hanzi.database;
 
+import static java.util.Arrays.asList;
 import static org.galobis.hanzi.database.DatabaseTestUtilities.asList;
 import static org.galobis.hanzi.database.DatabaseTestUtilities.getConnection;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.CHARACTER;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.DEFINITION;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.SIMPLIFIED;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -10,7 +14,9 @@ import static org.hamcrest.Matchers.is;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.SAXParserFactory;
@@ -28,9 +34,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 @Category(IntegrationTest.class)
 public class InitialStateIntegrationTest {
-    private static final String CODEPOINT = "codepoint";
+    private static final String COLUMN_CODEPOINT = "codepoint";
 
-    private static final String DEFINITION = "definition";
+    private static final String COLUMN_DEFINITION = "definition";
 
     private static final String SQL_COLUMN_HANZI = "SELECT %s FROM hanzi WHERE codepoint IN (%d, %d, %d)";
 
@@ -43,11 +49,18 @@ public class InitialStateIntegrationTest {
             + "FROM reading, pinyin WHERE pinyin.id = pinyin_id "
             + "AND codepoint = %d ORDER BY ordinal";
 
+    private static final String SQL_COUNT_SIMPLIFIED = "SELECT COUNT(*) FROM simplified";
+
+    private static final String SQL_COLUMN_SIMPLIFIED = "SELECT simplified "
+            + "FROM simplified WHERE codepoint = %d ORDER BY ordinal";
+
     private static Connection connection;
 
     private static int totalUnihanCodePoints = 0;
 
     private static int totalUnihanDefinitions = 0;
+
+    private static int totalSimplifiedVariants = 0;
 
     @BeforeClass
     public static void connectToDatabase() throws Exception {
@@ -63,7 +76,7 @@ public class InitialStateIntegrationTest {
     @Test
     public void database_should_contain_unihan_codepoints() throws Exception {
         List<Integer> codepoints = asList(connection,
-                String.format(SQL_COLUMN_HANZI, CODEPOINT, asInt("才"), asInt("的"), asInt("𠜱")),
+                String.format(SQL_COLUMN_HANZI, COLUMN_CODEPOINT, asInt("才"), asInt("的"), asInt("𠜱")),
                 Integer.class);
         assertThat(codepoints, contains(asInt("才"), asInt("的"), asInt("𠜱")));
     }
@@ -71,7 +84,7 @@ public class InitialStateIntegrationTest {
     @Test
     public void database_should_contain_all_unihan_codepoints() throws Exception {
         try (ResultSet codepointCount = connection.prepareCall(
-                String.format(SQL_COUNT_HANZI, CODEPOINT)).executeQuery()) {
+                String.format(SQL_COUNT_HANZI, COLUMN_CODEPOINT)).executeQuery()) {
             codepointCount.next();
             assertThat(codepointCount.getInt(1), is(equalTo(totalUnihanCodePoints)));
         }
@@ -80,7 +93,7 @@ public class InitialStateIntegrationTest {
     @Test
     public void database_should_contain_Unihan_definitions() throws Exception {
         List<String> definitions = asList(connection,
-                String.format(SQL_COLUMN_HANZI, DEFINITION, asInt("梦"), asInt("覉"), asInt("䃟")),
+                String.format(SQL_COLUMN_HANZI, COLUMN_DEFINITION, asInt("梦"), asInt("覉"), asInt("䃟")),
                 String.class);
         assertThat(definitions,
                 containsInAnyOrder("dream; visionary; wishful",
@@ -91,7 +104,7 @@ public class InitialStateIntegrationTest {
     @Test
     public void database_should_contain_all_Unihan_definitions() throws Exception {
         try (ResultSet definitionCount = connection.prepareCall(
-                String.format(SQL_COUNT_HANZI, DEFINITION)).executeQuery()) {
+                String.format(SQL_COUNT_HANZI, COLUMN_DEFINITION)).executeQuery()) {
             definitionCount.next();
             assertThat(definitionCount.getInt(1), is(equalTo(totalUnihanDefinitions)));
         }
@@ -111,6 +124,30 @@ public class InitialStateIntegrationTest {
         assertThat(readings, contains("lu3", "xi1"));
     }
 
+    @Test
+    public void database_should_contain_simplified_variants() throws Exception {
+        Map<Integer, List<Integer>> expected = new HashMap<>();
+        expected.put(0x4E95, asList());
+        expected.put(0x611B, asList(0x7231));
+        expected.put(0x5FB5, asList(0x5F81, 0x5FB5));
+        expected.put(0x937E, asList(0x949F, 0x953A));
+        for (Integer codePoint : expected.keySet()) {
+            List<Integer> variants = asList(connection,
+                    String.format(String.format(SQL_COLUMN_SIMPLIFIED, codePoint)),
+                    Integer.class);
+            assertThat(variants, equalTo(expected.get(codePoint)));
+        }
+    }
+
+    @Test
+    public void database_should_contain_all_simplified_variants() throws Exception {
+        try (ResultSet simplifiedCount = connection.prepareCall(
+                String.format(SQL_COUNT_SIMPLIFIED)).executeQuery()) {
+            simplifiedCount.next();
+            assertThat(simplifiedCount.getInt(1), is(equalTo(totalSimplifiedVariants)));
+        }
+    }
+
     public static Integer asInt(String hanzi) {
         return hanzi.codePointAt(0);
     }
@@ -124,11 +161,14 @@ public class InitialStateIntegrationTest {
                 @Override
                 public void startElement(String uri, String localName, String qName, Attributes attributes)
                         throws SAXException {
-                    if ("char".equals(qName)) {
+                    if (CHARACTER.equals(qName)) {
                         totalUnihanCodePoints++;
                     }
-                    if (attributes.getValue("kDefinition") != null) {
+                    if (attributes.getValue(DEFINITION) != null) {
                         totalUnihanDefinitions++;
+                    }
+                    if (attributes.getValue(SIMPLIFIED) != null) {
+                        totalSimplifiedVariants += attributes.getValue(SIMPLIFIED).split(" ").length;
                     }
                 }
             });

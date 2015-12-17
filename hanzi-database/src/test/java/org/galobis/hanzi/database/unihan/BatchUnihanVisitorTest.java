@@ -23,7 +23,7 @@ public class BatchUnihanVisitorTest {
     @Injectable
     private PreparedStatement statement;
 
-    private BatchUnihanVisitor visitor;
+    private UnihanVisitor visitor;
 
     @Before
     public void initializeVisitor() throws Exception {

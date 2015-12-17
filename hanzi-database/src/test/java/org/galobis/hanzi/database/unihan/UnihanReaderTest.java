@@ -46,6 +46,12 @@ public class UnihanReaderTest {
                     .definition("(same as U+4E18 丘) hillock or mound")
                     .readings("qiu1")
                     .build(),
+            new Hanzi.Builder(0x346F)
+                    .definition("last name, all; together; mutually, "
+                            + "a low rank officer to take charge of the bandits in ancient time")
+                    .readings("xu3")
+                    .simplified(0x3454)
+                    .build(),
             new Hanzi.Builder(0x4DB5)
                     .definition("(same as U+7B8E 箎) a bamboo flute with seven holes")
                     .readings("chi2")
@@ -57,10 +63,12 @@ public class UnihanReaderTest {
             new Hanzi.Builder(0x6F22)
                     .definition("the Chinese people, Chinese language")
                     .readings("han4", "tan1")
+                    .simplified(0x6C49)
                     .build(),
             new Hanzi.Builder(0x9F4A)
                     .definition("even, uniform, of equal length")
                     .readings("qi2", "ji4", "zhai1", "ji1", "zi1", "jian3")
+                    .simplified(0x9F50)
                     .build(),
             new Hanzi.Builder(0x9FD5)
                     .definition("Danio chrysotaeniata")

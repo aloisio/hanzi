@@ -13,6 +13,8 @@ public class UnihanConstants {
 
     public static final String MANDARIN = "kMandarin";
 
+    public static final String SIMPLIFIED = "kSimplifiedVariant";
+
     public static final String XHC1983 = "kXHC1983";
 
     private UnihanConstants() {

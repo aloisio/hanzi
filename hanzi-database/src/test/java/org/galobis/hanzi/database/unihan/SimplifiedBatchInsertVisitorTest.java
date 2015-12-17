@@ -11,9 +11,9 @@ import org.junit.Test;
 
 import mockit.Expectations;
 import mockit.Injectable;
-import mockit.Verifications;
+import mockit.VerificationsInOrder;
 
-public class PinyinBatchInsertVisitorTest {
+public class SimplifiedBatchInsertVisitorTest {
 
     @Injectable
     private Connection connection;
@@ -27,24 +27,25 @@ public class PinyinBatchInsertVisitorTest {
     public void createVisitor() throws Exception {
         new Expectations() {
             {
-                connection.prepareStatement(withArgThat(containsString("pinyin")));
+                connection.prepareStatement(withArgThat(containsString("simplified")));
                 result = statement;
             }
         };
 
-        visitor = new PinyinBatchInsertVisitor(connection);
+        visitor = new SimplifiedBatchInsertVisitor(connection);
     }
 
     @Test
-    public void should_insert_each_pinyin_only_once() throws Exception {
-        visitor.visit(new Hanzi.Builder(0x4FBF).readings("bian4", "pian2").build());
-        visitor.visit(new Hanzi.Builder(0x53D8).readings("bian4").build());
-        new Verifications() {
+    public void should_add_batch_for_each_simplified_variant() throws Exception {
+        visitor.visit(new Hanzi.Builder("鍾".codePointAt(0)).simplified("钟".codePointAt(0), "锺".codePointAt(0)).build());
+        new VerificationsInOrder() {
             {
-                statement.setString(1, "bian");
-                statement.setString(1, "pian");
+                statement.setInt(anyInt, 0x937E);
+                statement.setInt(anyInt, 0x949F);
                 statement.addBatch();
-                times = 2;
+                statement.setInt(anyInt, 0x937E);
+                statement.setInt(anyInt, 0x953A);
+                statement.addBatch();
             }
         };
     }

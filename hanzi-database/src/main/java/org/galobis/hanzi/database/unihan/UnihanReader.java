@@ -6,11 +6,13 @@ import static org.galobis.hanzi.database.unihan.UnihanConstants.DEFINITION;
 import static org.galobis.hanzi.database.unihan.UnihanConstants.HANYU_PINLU;
 import static org.galobis.hanzi.database.unihan.UnihanConstants.HANYU_PINYIN;
 import static org.galobis.hanzi.database.unihan.UnihanConstants.MANDARIN;
+import static org.galobis.hanzi.database.unihan.UnihanConstants.SIMPLIFIED;
 import static org.galobis.hanzi.database.unihan.UnihanConstants.XHC1983;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.zip.ZipInputStream;
@@ -46,6 +48,7 @@ public class UnihanReader {
                     Hanzi hanzi = new Hanzi.Builder(codePoint)
                             .definition(definition)
                             .readings(getReadings(streamReader))
+                            .simplified(getSimplified(streamReader))
                             .build();
                     visitor.visit(hanzi);
                 }
@@ -53,6 +56,14 @@ public class UnihanReader {
             }
             visitor.close();
         }
+    }
+
+    private Hanzi[] getSimplified(UnihanXMLStreamReader streamReader) {
+        return Arrays.stream(Optional.ofNullable(streamReader.getAttributeValue(null, SIMPLIFIED))
+                .orElse("").replaceAll("U\\+", "").split(" "))
+                .filter(s -> !s.isEmpty())
+                .map(s -> Integer.valueOf(s, 16))
+                .map(c -> new Hanzi.Builder(c).build()).toArray(Hanzi[]::new);
     }
 
     private List<Pinyin> getReadings(UnihanXMLStreamReader streamReader) {

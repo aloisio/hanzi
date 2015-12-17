@@ -8,7 +8,7 @@ import mockit.Injectable;
 import mockit.Verifications;
 
 public class CompositeUnihanVisitorTest {
-    private CompositeUnihanVisitor visitor;
+    private UnihanVisitor visitor;
 
     @Injectable
     private UnihanVisitor visitor1;

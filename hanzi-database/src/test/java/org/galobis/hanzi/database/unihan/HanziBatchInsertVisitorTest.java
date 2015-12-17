@@ -21,7 +21,7 @@ public class HanziBatchInsertVisitorTest {
     @Injectable
     private PreparedStatement statement;
 
-    private HanziBatchInsertVisitor visitor;
+    private UnihanVisitor visitor;
 
     @Before
     public void createVisitor() throws Exception {
