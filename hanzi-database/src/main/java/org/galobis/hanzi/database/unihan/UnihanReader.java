@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.zip.ZipInputStream;
 
+import org.galobis.hanzi.database.util.BordaCounter;
 import org.galobis.hanzi.model.Hanzi;
 import org.galobis.hanzi.model.Pinyin;
-import org.galobis.hanzi.util.BordaCounter;
 
 public class UnihanReader {
     private final UnihanVisitor visitor;

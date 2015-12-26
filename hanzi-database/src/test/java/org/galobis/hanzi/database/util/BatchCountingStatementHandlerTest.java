@@ -1,13 +1,13 @@
-package org.galobis.hanzi.util;
+package org.galobis.hanzi.database.util;
 
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
-import static org.galobis.hanzi.util.BatchCountingStatementHandler.countBatches;
+import static org.galobis.hanzi.database.util.BatchCountingStatementHandler.countBatches;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 import java.sql.PreparedStatement;
 
-import org.galobis.hanzi.util.BatchCountingStatementHandler.BatchCountingStatement;
+import org.galobis.hanzi.database.util.BatchCountingStatementHandler.BatchCountingStatement;
 import org.junit.Before;
 import org.junit.Test;
 

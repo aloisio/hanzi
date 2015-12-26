@@ -1,4 +1,4 @@
-package org.galobis.hanzi.util;
+package org.galobis.hanzi.database.util;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

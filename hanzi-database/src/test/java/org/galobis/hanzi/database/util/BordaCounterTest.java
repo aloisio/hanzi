@@ -1,4 +1,4 @@
-package org.galobis.hanzi.util;
+package org.galobis.hanzi.database.util;
 
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -7,6 +7,7 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.stream.IntStream;
 
+import org.galobis.hanzi.database.util.BordaCounter;
 import org.junit.Test;
 
 public class BordaCounterTest {

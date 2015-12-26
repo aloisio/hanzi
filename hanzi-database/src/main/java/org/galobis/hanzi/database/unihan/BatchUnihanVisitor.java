@@ -1,12 +1,12 @@
 package org.galobis.hanzi.database.unihan;
 
-import static org.galobis.hanzi.util.BatchCountingStatementHandler.countBatches;
+import static org.galobis.hanzi.database.util.BatchCountingStatementHandler.countBatches;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+import org.galobis.hanzi.database.util.BatchCountingStatementHandler.BatchCountingStatement;
 import org.galobis.hanzi.model.Hanzi;
-import org.galobis.hanzi.util.BatchCountingStatementHandler.BatchCountingStatement;
 
 public abstract class BatchUnihanVisitor implements UnihanVisitor {
 

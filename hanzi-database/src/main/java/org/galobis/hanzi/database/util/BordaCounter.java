@@ -1,4 +1,4 @@
-package org.galobis.hanzi.util;
+package org.galobis.hanzi.database.util;
 
 import java.util.Arrays;
 import java.util.Collection;
