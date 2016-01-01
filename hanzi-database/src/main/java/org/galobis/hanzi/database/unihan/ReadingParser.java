@@ -4,7 +4,7 @@ import static org.galobis.hanzi.database.unihan.UnihanConstants.HANYU_PINLU;
 import static org.galobis.hanzi.database.unihan.UnihanConstants.HANYU_PINYIN;
 import static org.galobis.hanzi.database.unihan.UnihanConstants.MANDARIN;
 import static org.galobis.hanzi.database.unihan.UnihanConstants.XHC1983;
-import static org.galobis.hanzi.model.Pinyin.pinyin;
+import static org.galobis.hanzi.domain.model.Pinyin.pinyin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.galobis.hanzi.model.Pinyin;
+import org.galobis.hanzi.domain.model.Pinyin;
 
 public class ReadingParser {
 

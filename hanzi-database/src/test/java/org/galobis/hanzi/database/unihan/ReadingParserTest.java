@@ -2,7 +2,7 @@ package org.galobis.hanzi.database.unihan;
 
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static java.util.Arrays.asList;
-import static org.galobis.hanzi.model.Pinyin.pinyin;
+import static org.galobis.hanzi.domain.model.Pinyin.pinyin;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.galobis.hanzi.model.Pinyin;
+import org.galobis.hanzi.domain.model.Pinyin;
 import org.junit.Test;
 
 public class ReadingParserTest {

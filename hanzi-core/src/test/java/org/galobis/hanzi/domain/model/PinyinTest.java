@@ -1,7 +1,7 @@
-package org.galobis.hanzi.model;
+package org.galobis.hanzi.domain.model;
 
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
-import static org.galobis.hanzi.model.Pinyin.pinyin;
+import static org.galobis.hanzi.domain.model.Pinyin.pinyin;
 import static org.galobis.hanzi.util.UnicodeUtilities.composition;
 import static org.galobis.hanzi.util.UnicodeUtilities.decomposition;
 import static org.hamcrest.Matchers.equalTo;
@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.galobis.hanzi.domain.model.Pinyin;
+import org.galobis.hanzi.domain.model.Tone;
 import org.junit.Before;
 import org.junit.Test;
 

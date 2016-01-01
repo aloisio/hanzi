@@ -1,4 +1,4 @@
-package org.galobis.hanzi.model;
+package org.galobis.hanzi.domain.model;
 
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static org.galobis.hanzi.util.UnicodeUtilities.composition;
@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Properties;
 
+import org.galobis.hanzi.domain.model.Tone;
 import org.junit.Test;
 
 public class ToneTest {

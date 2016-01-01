@@ -16,6 +16,7 @@
 	<modules>
 		<module>hanzi-core</module>
 		<module>hanzi-database</module>
+		<module>hanzi-infrastructure</module>
 	</modules>
 
 	<build>

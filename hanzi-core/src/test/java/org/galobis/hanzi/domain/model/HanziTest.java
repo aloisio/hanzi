@@ -1,7 +1,7 @@
-package org.galobis.hanzi.model;
+package org.galobis.hanzi.domain.model;
 
 import static java.util.Arrays.asList;
-import static org.galobis.hanzi.model.Pinyin.pinyin;
+import static org.galobis.hanzi.domain.model.Pinyin.pinyin;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterableOf;
@@ -15,6 +15,8 @@ import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 
+import org.galobis.hanzi.domain.model.Hanzi;
+import org.galobis.hanzi.domain.model.Pinyin;
 import org.junit.Test;
 
 public class HanziTest {

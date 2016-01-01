@@ -7,15 +7,26 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>hanzi-core</artifactId>
-	<name>Hanzi Core Domain Model</name>
-	<description>Hanzi Core Domain Model</description>
+	<artifactId>hanzi-infrastructure</artifactId>
+	<name>Hanzi Infrastructure</name>
+	<description>Hanzi Infrastructure Layer</description>
 	<packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.jmockit</groupId>
-			<artifactId>jmockit</artifactId>
+			<groupId>org.galobis</groupId>
+			<artifactId>hanzi-core</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.galobis</groupId>
+			<artifactId>hanzi-database</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

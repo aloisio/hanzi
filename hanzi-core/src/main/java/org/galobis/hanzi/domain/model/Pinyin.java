@@ -1,4 +1,4 @@
-package org.galobis.hanzi.model;
+package org.galobis.hanzi.domain.model;
 
 import static org.galobis.hanzi.util.UnicodeUtilities.decomposition;
 

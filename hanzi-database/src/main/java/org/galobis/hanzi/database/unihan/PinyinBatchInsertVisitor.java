@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.galobis.hanzi.model.Hanzi;
-import org.galobis.hanzi.model.Pinyin;
+import org.galobis.hanzi.domain.model.Hanzi;
+import org.galobis.hanzi.domain.model.Pinyin;
 
 public class PinyinBatchInsertVisitor extends BatchUnihanVisitor {
 

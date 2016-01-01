@@ -1,8 +1,8 @@
-package org.galobis.hanzi.model;
+package org.galobis.hanzi.domain.model;
 
 public class Text {
 
-    public Text(String content) {
+    public Text(String content, Script script) {
     }
 
     public Script script() {

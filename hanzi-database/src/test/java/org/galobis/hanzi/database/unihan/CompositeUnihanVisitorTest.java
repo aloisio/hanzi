@@ -1,6 +1,6 @@
 package org.galobis.hanzi.database.unihan;
 
-import org.galobis.hanzi.model.Hanzi;
+import org.galobis.hanzi.domain.model.Hanzi;
 import org.junit.Before;
 import org.junit.Test;
 

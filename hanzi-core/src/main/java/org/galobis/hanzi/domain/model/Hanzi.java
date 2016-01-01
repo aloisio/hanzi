@@ -1,4 +1,4 @@
-package org.galobis.hanzi.model;
+package org.galobis.hanzi.domain.model;
 
 import java.util.Arrays;
 import java.util.Collection;

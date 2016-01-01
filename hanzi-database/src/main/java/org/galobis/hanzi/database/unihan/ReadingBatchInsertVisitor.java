@@ -3,8 +3,8 @@ package org.galobis.hanzi.database.unihan;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-import org.galobis.hanzi.model.Hanzi;
-import org.galobis.hanzi.model.Pinyin;
+import org.galobis.hanzi.domain.model.Hanzi;
+import org.galobis.hanzi.domain.model.Pinyin;
 
 public class ReadingBatchInsertVisitor extends BatchUnihanVisitor {
 

@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.containsString;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-import org.galobis.hanzi.model.Hanzi;
+import org.galobis.hanzi.domain.model.Hanzi;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
