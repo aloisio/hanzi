@@ -19,10 +19,12 @@ public class DatabaseTextFactory implements TextFactory {
     }
 
     private Script getScript(String content) {
-        if (numberOfCodePointsInSet(content, getSimplifiedCodePoints()) > 0) {
+        long simplifiedCount = numberOfCodePointsInSet(content, getSimplifiedCodePoints());
+        long traditionalCount = numberOfCodePointsInSet(content, getTraditionalCodePoints());
+        if (simplifiedCount > 0 && simplifiedCount > traditionalCount) {
             return Script.SIMPLIFIED;
         }
-        if (numberOfCodePointsInSet(content, getTraditionalCodePoints()) > 0) {
+        if (traditionalCount > 0 && traditionalCount > simplifiedCount) {
             return Script.TRADITIONAL;
         }
         return Script.UNKNOWN;

@@ -31,4 +31,11 @@ public class DatabaseTextFactoryTest {
         assertThat(new DatabaseTextFactory().textFrom(input),
                 is(equalTo(new Text(input, Script.TRADITIONAL))));
     }
+
+    @Test
+    public void should_return_UNKNOWN_for_ambiguous_cases() {
+        asList("他是日本人。", "他們是中国人。").stream().forEach(
+                input -> assertThat(new DatabaseTextFactory().textFrom(input),
+                        is(equalTo(new Text(input, Script.UNKNOWN)))));
+    }
 }
