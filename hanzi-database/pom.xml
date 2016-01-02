@@ -82,7 +82,7 @@
 				<configuration>
 					<includes>
 						<include>database/**/*</include>
-						<include>org/galobis/hanzi/database/DatabaseUtilities.class</include>
+						<include>org/galobis/hanzi/database/DatabaseUtilities*.class</include>
 					</includes>
 					<excludes>
 						<exclude>raw/**/*</exclude>

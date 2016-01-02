@@ -1,5 +1,9 @@
 package org.galobis.hanzi.database;
 
+import static org.galobis.hanzi.database.DatabaseUtilities.DATABASE_URL;
+import static org.galobis.hanzi.database.DatabaseUtilities.ERROR_STREAM_FIELD_PROPERTY_KEY;
+import static org.galobis.hanzi.database.DatabaseUtilities.ERROR_STREAM_FIELD_PROPERTY_VALUE;
+
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,8 +16,8 @@ import java.util.Properties;
 public class DatabaseTestUtilities {
 
     public static Connection getConnection() throws SQLException {
-        System.setProperty("derby.stream.error.field", String.format("%s.DEV_NULL", DatabaseUtilities.class.getName()));
-        return DriverManager.getConnection("jdbc:derby:classpath:database/hanzi", getConnectionProperties());
+        System.setProperty(ERROR_STREAM_FIELD_PROPERTY_KEY, ERROR_STREAM_FIELD_PROPERTY_VALUE);
+        return DriverManager.getConnection(DATABASE_URL, getConnectionProperties());
     }
 
     public static <T> List<T> asList(Connection connection, String sql, Class<T> type) throws Exception {
