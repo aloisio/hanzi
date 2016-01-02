@@ -9,7 +9,13 @@ public class HanziTableGatewayTest {
 
     @Test
     public void should_return_set_of_codepoints_which_only_appear_in_Simplified_Chinese() {
-        assertThat(new HanziTableGateway().getSimpifiedOnlyCodepoints(),
+        assertThat(new HanziTableGateway().getSimpifiedOnlyCodePoints(),
                 hasItems(0x5B66, 0x5BF9));
+    }
+
+    @Test
+    public void should_return_set_of_codepoints_which_only_appear_in_Traditional_Chinese() {
+        assertThat(new HanziTableGateway().getTraditionalOnlyCodePoints(),
+                hasItems(0x5B78, 0x5C0D));
     }
 }

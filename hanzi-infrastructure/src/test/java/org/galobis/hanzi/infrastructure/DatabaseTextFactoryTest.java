@@ -24,4 +24,11 @@ public class DatabaseTextFactoryTest {
         assertThat(new DatabaseTextFactory().textFrom(input),
                 is(equalTo(new Text(input, Script.SIMPLIFIED))));
     }
+
+    @Test
+    public void should_return_TRADITIONAL_for_Traditional_Chinese_text() {
+        String input = "人人生而自由﹐在尊嚴和權利上一律平等。他們賦有理性和良心﹐並應以兄弟關係的精神互相對待。";
+        assertThat(new DatabaseTextFactory().textFrom(input),
+                is(equalTo(new Text(input, Script.TRADITIONAL))));
+    }
 }

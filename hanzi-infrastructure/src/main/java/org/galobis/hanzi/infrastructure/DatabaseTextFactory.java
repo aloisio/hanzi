@@ -9,26 +9,42 @@ import org.galobis.hanzi.domain.model.TextFactory;
 
 public class DatabaseTextFactory implements TextFactory {
 
-    private Set<Integer> simplifiedCodepoints;
+    private Set<Integer> simplifiedCodePoints;
 
-    private Set<Integer> getSimplifiedCodepoints() {
-        if (simplifiedCodepoints == null) {
-            simplifiedCodepoints = new HanziTableGateway().getSimpifiedOnlyCodepoints();
-        }
-        return simplifiedCodepoints;
-    }
+    private Set<Integer> traditionalCodePoints;
 
     @Override
     public Text textFrom(String content) {
-        long simplifiedCount = Optional.ofNullable(content).orElse("").codePoints()
-                .filter(getSimplifiedCodepoints()::contains).count();
-        return new Text(content, getScript(simplifiedCount));
+        return new Text(content, getScript(content));
     }
 
-    private Script getScript(long simplifiedCount) {
-        if (simplifiedCount > 0) {
+    private Script getScript(String content) {
+        if (numberOfCodePointsInSet(content, getSimplifiedCodePoints()) > 0) {
             return Script.SIMPLIFIED;
         }
+        if (numberOfCodePointsInSet(content, getTraditionalCodePoints()) > 0) {
+            return Script.TRADITIONAL;
+        }
         return Script.UNKNOWN;
+    }
+
+    private Set<Integer> getSimplifiedCodePoints() {
+        if (simplifiedCodePoints == null) {
+            simplifiedCodePoints = new HanziTableGateway().getSimpifiedOnlyCodePoints();
+        }
+        return simplifiedCodePoints;
+    }
+
+    private Set<Integer> getTraditionalCodePoints() {
+        if (traditionalCodePoints == null) {
+            traditionalCodePoints = new HanziTableGateway().getTraditionalOnlyCodePoints();
+        }
+        return traditionalCodePoints;
+    }
+
+    private long numberOfCodePointsInSet(String content, Set<Integer> codePoints) {
+        return Optional.ofNullable(content).orElse("").codePoints()
+                .filter(codePoints::contains)
+                .count();
     }
 }

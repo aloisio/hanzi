@@ -1,8 +1,8 @@
 package org.galobis.hanzi.infrastructure;
 
 import static org.galobis.hanzi.database.DatabaseConstants.DATABASE_URL;
-import static org.galobis.hanzi.database.DatabaseConstants.ERROR_STREAM_FIELD_PROPERTY_VALUE;
 import static org.galobis.hanzi.database.DatabaseConstants.ERROR_STREAM_FIELD_PROPERTY_KEY;
+import static org.galobis.hanzi.database.DatabaseConstants.ERROR_STREAM_FIELD_PROPERTY_VALUE;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,12 +27,16 @@ public class HanziTableGateway {
             String.format(SELECT_PATTERN, Tables.TRADITIONAL, "NOT"),
             String.format(SELECT_PATTERN, Tables.SIMPLIFIED, ""));
 
-    public Set<Integer> getSimpifiedOnlyCodepoints() {
-        try (Connection connection = getConnection()) {
-            return asSet(connection, SQL_SIMPLIFIED, Integer.class);
-        } catch (SQLException exc) {
-            throw new InfrastructureException(exc);
-        }
+    private static final String SQL_TRADITIONAL = String.format(INTERSECT_PATTERN,
+            String.format(SELECT_PATTERN, Tables.TRADITIONAL, ""),
+            String.format(SELECT_PATTERN, Tables.SIMPLIFIED, "NOT"));
+
+    public Set<Integer> getSimpifiedOnlyCodePoints() {
+        return retrieve(SQL_SIMPLIFIED);
+    }
+
+    public Set<Integer> getTraditionalOnlyCodePoints() {
+        return retrieve(SQL_TRADITIONAL);
     }
 
     private <T> Set<T> asSet(Connection connection, String sql, Class<T> type) throws SQLException {
@@ -49,5 +53,13 @@ public class HanziTableGateway {
         System.setProperty(ERROR_STREAM_FIELD_PROPERTY_KEY, ERROR_STREAM_FIELD_PROPERTY_VALUE);
         DriverManager.registerDriver(new EmbeddedDriver());
         return DriverManager.getConnection(DATABASE_URL);
+    }
+
+    private Set<Integer> retrieve(String sql) {
+        try (Connection connection = getConnection()) {
+            return asSet(connection, sql, Integer.class);
+        } catch (SQLException exc) {
+            throw new InfrastructureException(exc);
+        }
     }
 }
