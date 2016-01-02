@@ -1,8 +1,8 @@
 package org.galobis.hanzi.infrastructure;
 
-import static org.galobis.hanzi.database.DatabaseUtilities.DATABASE_URL;
-import static org.galobis.hanzi.database.DatabaseUtilities.ERROR_STREAM_FIELD_PROPERTY_VALUE;
-import static org.galobis.hanzi.database.DatabaseUtilities.ERROR_STREAM_FIELD_PROPERTY_KEY;
+import static org.galobis.hanzi.database.DatabaseConstants.DATABASE_URL;
+import static org.galobis.hanzi.database.DatabaseConstants.ERROR_STREAM_FIELD_PROPERTY_VALUE;
+import static org.galobis.hanzi.database.DatabaseConstants.ERROR_STREAM_FIELD_PROPERTY_KEY;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,8 +12,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
-import org.galobis.hanzi.database.DatabaseUtilities.Columns;
-import org.galobis.hanzi.database.DatabaseUtilities.Tables;
+import org.galobis.hanzi.database.DatabaseConstants.Columns;
+import org.galobis.hanzi.database.DatabaseConstants.Tables;
 
 public class HanziTableGateway {
 

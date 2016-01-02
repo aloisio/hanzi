@@ -1,8 +1,8 @@
 package org.galobis.hanzi.database;
 
-import static org.galobis.hanzi.database.DatabaseUtilities.DATABASE_URL;
-import static org.galobis.hanzi.database.DatabaseUtilities.ERROR_STREAM_FIELD_PROPERTY_KEY;
-import static org.galobis.hanzi.database.DatabaseUtilities.ERROR_STREAM_FIELD_PROPERTY_VALUE;
+import static org.galobis.hanzi.database.DatabaseConstants.DATABASE_URL;
+import static org.galobis.hanzi.database.DatabaseConstants.ERROR_STREAM_FIELD_PROPERTY_KEY;
+import static org.galobis.hanzi.database.DatabaseConstants.ERROR_STREAM_FIELD_PROPERTY_VALUE;
 
 import java.nio.file.Paths;
 import java.sql.Connection;

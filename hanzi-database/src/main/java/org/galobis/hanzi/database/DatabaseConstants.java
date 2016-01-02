@@ -2,7 +2,7 @@ package org.galobis.hanzi.database;
 
 import java.io.OutputStream;
 
-public final class DatabaseUtilities {
+public final class DatabaseConstants {
     public static final class Columns {
         public static final String CODEPOINT = "codepoint";
 
@@ -34,11 +34,11 @@ public final class DatabaseUtilities {
     public static final String ERROR_STREAM_FIELD_PROPERTY_KEY = "derby.stream.error.field";
 
     public static final String ERROR_STREAM_FIELD_PROPERTY_VALUE = String.format("%s.DEV_NULL",
-            DatabaseUtilities.class.getName());
+            DatabaseConstants.class.getName());
 
     private static final String UTILITY_ERROR = "Do not instantiate";
 
-    private DatabaseUtilities() {
+    private DatabaseConstants() {
         throw new UnsupportedOperationException(UTILITY_ERROR);
     }
 }

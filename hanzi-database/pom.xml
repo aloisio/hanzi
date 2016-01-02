@@ -34,7 +34,7 @@
 									<classpath refid="maven.compile.classpath" />
 									<sysproperty key="java.security.policy" value="${basedir}/derby.policy" />
 									<sysproperty key="derby.stream.error.field"
-										value="org.galobis.hanzi.database.DatabaseUtilities.DEV_NULL" />
+										value="org.galobis.hanzi.database.DatabaseConstants.DEV_NULL" />
 									<arg value="${db.url}" />
 								</java>
 							</target>
@@ -82,7 +82,7 @@
 				<configuration>
 					<includes>
 						<include>database/**/*</include>
-						<include>org/galobis/hanzi/database/DatabaseUtilities*.class</include>
+						<include>org/galobis/hanzi/database/DatabaseConstants*.class</include>
 					</includes>
 					<excludes>
 						<exclude>raw/**/*</exclude>
