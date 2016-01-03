@@ -1,6 +1,6 @@
 package org.galobis.hanzi.domain.service;
 
-import org.galobis.hanzi.domain.model.Text;
+import org.galobis.hanzi.domain.model.Script;
 import org.galobis.hanzi.domain.model.TextFactory;
 
 public class TextAnalysisService {
@@ -11,7 +11,7 @@ public class TextAnalysisService {
         this.textFactory = textFactory;
     }
 
-    public Text textFrom(String content) {
-        return textFactory.textFrom(content);
+    public Script scriptOf(String content) {
+        return textFactory.textFrom(content).script();
     }
 }

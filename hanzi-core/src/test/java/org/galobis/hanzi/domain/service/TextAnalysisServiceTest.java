@@ -17,7 +17,7 @@ public class TextAnalysisServiceTest {
     private TextFactory factory;
 
     @Test
-    public void textFrom_should_delegate_when_script_not_passed() {
+    public void scriptOf_should_delegate_to_TextFactory_implementation() {
         new Expectations() {
             {
                 factory.textFrom(anyString);
@@ -25,7 +25,6 @@ public class TextAnalysisServiceTest {
             }
         };
         TextAnalysisService service = new TextAnalysisService(factory);
-        assertThat(service.textFrom("input").script(),
-                is(equalTo(Script.UNKNOWN)));
+        assertThat(service.scriptOf("input"), is(equalTo(Script.UNKNOWN)));
     }
 }
