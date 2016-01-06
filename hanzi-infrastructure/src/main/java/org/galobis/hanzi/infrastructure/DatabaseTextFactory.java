@@ -32,7 +32,7 @@ public class DatabaseTextFactory implements TextFactory {
 
     private Set<Integer> getSimplifiedCodePoints() {
         if (simplifiedCodePoints == null) {
-            simplifiedCodePoints = new HanziTableGateway().getSimpifiedOnlyCodePoints();
+            simplifiedCodePoints = new HanziTableGateway().getSimplifiedOnlyCodePoints();
         }
         return simplifiedCodePoints;
     }

@@ -31,7 +31,7 @@ public class HanziTableGateway {
             String.format(SELECT_PATTERN, Tables.TRADITIONAL, ""),
             String.format(SELECT_PATTERN, Tables.SIMPLIFIED, "NOT"));
 
-    public Set<Integer> getSimpifiedOnlyCodePoints() {
+    public Set<Integer> getSimplifiedOnlyCodePoints() {
         return retrieve(SQL_SIMPLIFIED);
     }
 
