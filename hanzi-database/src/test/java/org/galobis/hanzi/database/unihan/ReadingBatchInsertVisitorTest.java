@@ -37,7 +37,7 @@ public class ReadingBatchInsertVisitorTest {
 
     @Test
     public void should_add_batch_for_each_reading() throws Exception {
-        visitor.visit(new Hanzi.Builder("卤".codePointAt(0)).readings("lu3", "xi1").build());
+        visitor.visit(new Hanzi.Builder("卤").readings("lu3", "xi1").build());
         new VerificationsInOrder() {
             {
                 statement.setInt(anyInt, 0x5364);

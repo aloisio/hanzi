@@ -37,7 +37,7 @@ public class SimplifiedBatchInsertVisitorTest {
 
     @Test
     public void should_add_batch_for_each_simplified_variant() throws Exception {
-        visitor.visit(new Hanzi.Builder("鍾".codePointAt(0)).simplified("钟".codePointAt(0), "锺".codePointAt(0)).build());
+        visitor.visit(new Hanzi.Builder("鍾").simplified("钟", "锺").build());
         new VerificationsInOrder() {
             {
                 statement.setInt(anyInt, 0x937E);

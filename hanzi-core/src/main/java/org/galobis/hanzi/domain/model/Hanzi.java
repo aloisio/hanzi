@@ -71,8 +71,12 @@ public class Hanzi {
 
         private List<Hanzi> traditional = Arrays.asList();
 
-        public Builder(Integer codePoint) {
-            this.codePoint = codePoint;
+        public Builder(int codePoint) {
+            this.codePoint = validate(codePoint);
+        }
+
+        public Builder(String ideogram) {
+            this(validate(ideogram).codePointAt(0));
         }
 
         public Builder definition(String definition) {
@@ -98,6 +102,12 @@ public class Hanzi {
             return this;
         }
 
+        public Builder simplified(String... ideograms) {
+            return simplified(Arrays.stream(ideograms)
+                    .map(c -> new Hanzi.Builder(c).build())
+                    .toArray(Hanzi[]::new));
+        }
+
         public Builder simplified(Integer... codepoints) {
             return simplified(Arrays.stream(codepoints)
                     .map(c -> new Hanzi.Builder(c).build())
@@ -109,10 +119,30 @@ public class Hanzi {
             return this;
         }
 
+        public Builder traditional(String... ideograms) {
+            return traditional(Arrays.stream(ideograms)
+                    .map(c -> new Hanzi.Builder(c).build())
+                    .toArray(Hanzi[]::new));
+        }
+
         public Builder traditional(Integer... codepoints) {
             return traditional(Arrays.stream(codepoints)
                     .map(c -> new Hanzi.Builder(c).build())
                     .toArray(Hanzi[]::new));
+        }
+
+        private static Integer validate(int codePoint) {
+            if (Character.isValidCodePoint(codePoint)) {
+                return codePoint;
+            }
+            throw new IllegalArgumentException();
+        }
+
+        private static String validate(String ideogram) {
+            if (ideogram == null || ideogram.isEmpty()) {
+                throw new IllegalArgumentException();
+            }
+            return ideogram;
         }
     }
 

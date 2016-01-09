@@ -15,8 +15,6 @@ import static org.junit.Assert.fail;
 
 import java.util.HashMap;
 
-import org.galobis.hanzi.domain.model.Hanzi;
-import org.galobis.hanzi.domain.model.Pinyin;
 import org.junit.Test;
 
 public class HanziTest {
@@ -47,7 +45,7 @@ public class HanziTest {
     }
 
     @Test
-    public void should_implement_asString() {
+    public void should_implement_toString() {
         assertEquals(new Hanzi.Builder(0x2072e).build().toString(), "𠜮");
         assertEquals(new Hanzi.Builder(0x798F).build().toString(), "福");
     }
@@ -110,5 +108,37 @@ public class HanziTest {
         assertThat(hanzi.traditional(), contains(
                 new Hanzi.Builder(0x937E).build(),
                 new Hanzi.Builder(0x9418).build()));
+    }
+
+    @Test
+    public void should_allow_passing_string_to_builder_instead_of_codepoint() throws Exception {
+        assertEquals(new Hanzi.Builder("福").build(), new Hanzi.Builder(0x798F).build());
+        assertEquals(new Hanzi.Builder("福利").build(), new Hanzi.Builder(0x798F).build());
+    }
+
+    @Test
+    public void should_not_build_with_invalid_codepoint_value() {
+        assertBuildingHanziFailsWith(null);
+        assertBuildingHanziFailsWith("");
+        assertBuildingHanziFailsWith(-1);
+        assertBuildingHanziFailsWith(Character.MAX_CODE_POINT + 1);
+    }
+
+    private void assertBuildingHanziFailsWith(String invalidInput) {
+        try {
+            new Hanzi.Builder(invalidInput).build();
+            fail("Expected exception");
+        } catch (IllegalArgumentException exc) {
+            return;
+        }
+    }
+
+    private void assertBuildingHanziFailsWith(int invalidInput) {
+        try {
+            new Hanzi.Builder(invalidInput).build();
+            fail("Expected exception");
+        } catch (IllegalArgumentException exc) {
+            return;
+        }
     }
 }

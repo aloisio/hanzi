@@ -37,8 +37,8 @@ public class TraditionalBatchInsertVisitorTest {
 
     @Test
     public void should_add_batch_for_each_traditional_variant() throws Exception {
-        visitor.visit(new Hanzi.Builder("钟".codePointAt(0))
-                .traditional("鍾".codePointAt(0), "鐘".codePointAt(0)).build());
+        visitor.visit(new Hanzi.Builder("钟")
+                .traditional("鍾", "鐘").build());
         new VerificationsInOrder() {
             {
                 statement.setInt(anyInt, 0x949F);
