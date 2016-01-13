@@ -124,6 +124,12 @@ public class HanziTest {
         assertBuildingHanziFailsWith(Character.MAX_CODE_POINT + 1);
     }
 
+    @Test
+    public void should_allow_passing_simplified_character_rank_to_builder() {
+        assertEquals(Integer.valueOf(1),
+                new Hanzi.Builder("的").simplifiedRank(1).build().simplifiedRank());
+    }
+
     private void assertBuildingHanziFailsWith(String invalidInput) {
         try {
             new Hanzi.Builder(invalidInput).build();

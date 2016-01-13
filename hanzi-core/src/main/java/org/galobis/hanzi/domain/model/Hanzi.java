@@ -18,6 +18,8 @@ public class Hanzi {
 
     private final Collection<Hanzi> traditional;
 
+    private final Integer simplifiedRank;
+
     public Integer codePoint() {
         return codePoint;
     }
@@ -36,6 +38,10 @@ public class Hanzi {
 
     public Collection<Hanzi> traditional() {
         return traditional;
+    }
+
+    public Integer simplifiedRank() {
+        return simplifiedRank;
     }
 
     @Override
@@ -70,6 +76,8 @@ public class Hanzi {
         private List<Hanzi> simplified = Arrays.asList();
 
         private List<Hanzi> traditional = Arrays.asList();
+
+        private Integer simplifiedRank;
 
         public Builder(int codePoint) {
             this.codePoint = validate(codePoint);
@@ -131,6 +139,11 @@ public class Hanzi {
                     .toArray(Hanzi[]::new));
         }
 
+        public Builder simplifiedRank(Integer rank) {
+            this.simplifiedRank = rank;
+            return this;
+        }
+
         private static Integer validate(int codePoint) {
             if (Character.isValidCodePoint(codePoint)) {
                 return codePoint;
@@ -152,5 +165,6 @@ public class Hanzi {
         readings = builder.readings;
         simplified = builder.simplified;
         traditional = builder.traditional;
+        simplifiedRank = builder.simplifiedRank;
     }
 }
