@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.galobis.hanzi.database.HanziVisitor;
 import org.galobis.hanzi.domain.model.Hanzi;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class UnihanReaderTest {
     private UnihanReader reader;
 
     @Injectable
-    private UnihanVisitor mockedVisitor;
+    private HanziVisitor mockedVisitor;
 
     private List<Hanzi> actualHanzi = new ArrayList<>();
 

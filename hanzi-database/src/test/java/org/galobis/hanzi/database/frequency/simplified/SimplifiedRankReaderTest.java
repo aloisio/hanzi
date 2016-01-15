@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.galobis.hanzi.database.HanziVisitor;
 import org.galobis.hanzi.domain.model.Hanzi;
 import org.junit.Test;
 
@@ -15,10 +16,10 @@ import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Verifications;
 
-public class SimplifiedIdeogramFrequencyReaderTest {
+public class SimplifiedRankReaderTest {
 
     @Injectable
-    private SimplifiedIdeogramFrequencyVisitor visitor;
+    private HanziVisitor visitor;
 
     @Test
     public void should_visit_all_codePoints_in_raw_data_source() throws Exception {
@@ -32,7 +33,7 @@ public class SimplifiedIdeogramFrequencyReaderTest {
                 visitor.visit(withCapture(values));
             }
         };
-        new SimplifiedIdeogramFrequencyReader(visitor).read();
+        new SimplifiedRankReader(visitor).read();
         expected.forEach(e -> assertThat(values, hasItem(sameBeanAs(e))));
         new Verifications() {
             {

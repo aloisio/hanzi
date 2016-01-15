@@ -18,12 +18,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.zip.ZipInputStream;
 
+import org.galobis.hanzi.database.HanziVisitor;
 import org.galobis.hanzi.database.util.BordaCounter;
 import org.galobis.hanzi.domain.model.Hanzi;
 import org.galobis.hanzi.domain.model.Pinyin;
 
 public class UnihanReader {
-    private final UnihanVisitor visitor;
+    private final HanziVisitor visitor;
 
     private final InputStream input;
 
@@ -31,11 +32,11 @@ public class UnihanReader {
 
     private final BordaCounter<Pinyin> readingCounter = new BordaCounter<>();
 
-    public UnihanReader(UnihanVisitor visitor) throws IOException {
+    public UnihanReader(HanziVisitor visitor) throws IOException {
         this(openZipFile(), visitor);
     }
 
-    UnihanReader(InputStream input, UnihanVisitor visitor) {
+    UnihanReader(InputStream input, HanziVisitor visitor) {
         this.input = input;
         this.visitor = visitor;
     }

@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.containsString;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+import org.galobis.hanzi.database.HanziVisitor;
 import org.galobis.hanzi.domain.model.Hanzi;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,7 @@ import mockit.Expectations;
 import mockit.Injectable;
 import mockit.VerificationsInOrder;
 
-public class ReadingBatchInsertVisitorTest {
+public class HanziTableInsertVisitorTest {
 
     @Injectable
     private Connection connection;
@@ -21,32 +22,29 @@ public class ReadingBatchInsertVisitorTest {
     @Injectable
     private PreparedStatement statement;
 
-    private UnihanVisitor visitor;
+    private HanziVisitor visitor;
 
     @Before
     public void createVisitor() throws Exception {
         new Expectations() {
             {
-                connection.prepareStatement(withArgThat(containsString("reading")));
+                connection.prepareStatement(withArgThat(containsString("hanzi")));
                 result = statement;
             }
         };
 
-        visitor = new ReadingBatchInsertVisitor(connection);
+        visitor = new HanziTableInsertVisitor(connection);
     }
 
     @Test
-    public void should_add_batch_for_each_reading() throws Exception {
-        visitor.visit(new Hanzi.Builder("卤").readings("lu3", "xi1").build());
+    public void should_insert_each_visited_Hanzi() throws Exception {
+        visitor.visit(new Hanzi.Builder(0x4FBF).definition("cheap").build());
+        visitor.visit(new Hanzi.Builder(0x53D8).definition("change").build());
         new VerificationsInOrder() {
             {
-                statement.setInt(anyInt, 0x5364);
-                statement.setString(anyInt, "lu");
-                statement.setInt(anyInt, 3);
+                statement.setString(anyInt, "cheap");
                 statement.addBatch();
-                statement.setInt(anyInt, 0x5364);
-                statement.setString(anyInt, "xi");
-                statement.setInt(anyInt, 1);
+                statement.setString(anyInt, "change");
                 statement.addBatch();
             }
         };

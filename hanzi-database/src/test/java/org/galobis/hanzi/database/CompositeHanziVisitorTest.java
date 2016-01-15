@@ -1,4 +1,4 @@
-package org.galobis.hanzi.database.unihan;
+package org.galobis.hanzi.database;
 
 import org.galobis.hanzi.domain.model.Hanzi;
 import org.junit.Before;
@@ -7,18 +7,18 @@ import org.junit.Test;
 import mockit.Injectable;
 import mockit.Verifications;
 
-public class CompositeUnihanVisitorTest {
-    private UnihanVisitor visitor;
+public class CompositeHanziVisitorTest {
+    private HanziVisitor visitor;
 
     @Injectable
-    private UnihanVisitor visitor1;
+    private HanziVisitor visitor1;
 
     @Injectable
-    private UnihanVisitor visitor2;
+    private HanziVisitor visitor2;
 
     @Before
     public void createComposite() throws Exception {
-        visitor = new CompositeUnihanVisitor(visitor1, visitor2);
+        visitor = new CompositeHanziVisitor(visitor1, visitor2);
     }
 
     @Test

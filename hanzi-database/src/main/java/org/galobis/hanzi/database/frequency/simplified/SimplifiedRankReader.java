@@ -6,9 +6,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 
+import org.galobis.hanzi.database.HanziVisitor;
 import org.galobis.hanzi.domain.model.Hanzi;
 
-public class SimplifiedIdeogramFrequencyReader {
+public class SimplifiedRankReader {
     private static final Charset CHARSET = Charset.forName("GBK");
 
     private static final String COMMENT_PREFIX = "/*";
@@ -21,9 +22,9 @@ public class SimplifiedIdeogramFrequencyReader {
 
     private static final String SEPARATOR = "\\t";
 
-    private final SimplifiedIdeogramFrequencyVisitor visitor;
+    private final HanziVisitor visitor;
 
-    public SimplifiedIdeogramFrequencyReader(SimplifiedIdeogramFrequencyVisitor visitor) {
+    public SimplifiedRankReader(HanziVisitor visitor) {
         this.visitor = visitor;
     }
 

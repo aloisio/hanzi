@@ -1,9 +1,10 @@
-package org.galobis.hanzi.database.unihan;
+package org.galobis.hanzi.database;
 
 import static org.hamcrest.Matchers.containsString;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import org.galobis.hanzi.domain.model.Hanzi;
 import org.junit.After;
@@ -15,7 +16,7 @@ import mockit.Injectable;
 import mockit.Mocked;
 import mockit.Verifications;
 
-public class BatchUnihanVisitorTest {
+public class BatchHanziVisitorTest {
 
     @Mocked
     private Connection connection;
@@ -23,7 +24,7 @@ public class BatchUnihanVisitorTest {
     @Injectable
     private PreparedStatement statement;
 
-    private UnihanVisitor visitor;
+    private HanziVisitor visitor;
 
     @Before
     public void initializeVisitor() throws Exception {
@@ -33,7 +34,7 @@ public class BatchUnihanVisitorTest {
                 result = statement;
             }
         };
-        visitor = new BatchUnihanVisitor(connection, 2) {
+        visitor = new BatchHanziVisitor(connection, 2) {
 
             @Override
             protected String getSQL() {
@@ -41,7 +42,7 @@ public class BatchUnihanVisitorTest {
             }
 
             @Override
-            protected void addBatches(PreparedStatement statement, Hanzi hanzi) throws Exception {
+            protected void addBatches(PreparedStatement statement, Hanzi hanzi) throws SQLException {
                 statement.addBatch();
             }
         };

@@ -18,11 +18,13 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.SAXParserFactory;
 
 import org.galobis.test.annotation.category.IntegrationTest;
+import org.hamcrest.Matchers;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -180,6 +182,17 @@ public class InitialStateIntegrationTest {
             traditionalCount.next();
             assertThat(traditionalCount.getInt(1), is(equalTo(totalTraditionalVariants)));
         }
+    }
+
+    @Test
+    public void database_should_contain_simplified_ideogram_rank() throws Exception {
+        List<Integer> ranks = asList(connection,
+                String.format("SELECT simplified_rank FROM hanzi WHERE codepoint IN (%s) ORDER BY codepoint",
+                        String.join(",",
+                                asList("的", "狐", "鴒").stream().sequential().map(c -> Integer.toString(asInt(c)))
+                                        .collect(Collectors.toList()).toArray(new String[0]))),
+                Integer.class);
+        assertThat(ranks, Matchers.contains(2321, 1, 9933));
     }
 
     public static Integer asInt(String hanzi) {

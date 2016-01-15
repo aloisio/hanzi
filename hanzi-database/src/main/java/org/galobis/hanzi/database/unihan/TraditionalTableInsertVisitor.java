@@ -2,12 +2,14 @@ package org.galobis.hanzi.database.unihan;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
+import org.galobis.hanzi.database.BatchHanziVisitor;
 import org.galobis.hanzi.domain.model.Hanzi;
 
-public class TraditionalBatchInsertVisitor extends BatchUnihanVisitor {
+public class TraditionalTableInsertVisitor extends BatchHanziVisitor {
 
-    public TraditionalBatchInsertVisitor(Connection connection) throws Exception {
+    public TraditionalTableInsertVisitor(Connection connection) throws Exception {
         super(connection);
     }
 
@@ -17,7 +19,7 @@ public class TraditionalBatchInsertVisitor extends BatchUnihanVisitor {
     }
 
     @Override
-    protected void addBatches(PreparedStatement statement, Hanzi hanzi) throws Exception {
+    protected void addBatches(PreparedStatement statement, Hanzi hanzi) throws SQLException {
         for (Hanzi traditional : hanzi.traditional()) {
             statement.setInt(1, hanzi.codePoint());
             statement.setInt(2, traditional.codePoint());

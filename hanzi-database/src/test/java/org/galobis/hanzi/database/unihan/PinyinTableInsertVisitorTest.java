@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.containsString;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+import org.galobis.hanzi.database.HanziVisitor;
 import org.galobis.hanzi.domain.model.Hanzi;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,7 @@ import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Verifications;
 
-public class PinyinBatchInsertVisitorTest {
+public class PinyinTableInsertVisitorTest {
 
     @Injectable
     private Connection connection;
@@ -21,7 +22,7 @@ public class PinyinBatchInsertVisitorTest {
     @Injectable
     private PreparedStatement statement;
 
-    private UnihanVisitor visitor;
+    private HanziVisitor visitor;
 
     @Before
     public void createVisitor() throws Exception {
@@ -32,7 +33,7 @@ public class PinyinBatchInsertVisitorTest {
             }
         };
 
-        visitor = new PinyinBatchInsertVisitor(connection);
+        visitor = new PinyinTableInsertVisitor(connection);
     }
 
     @Test
