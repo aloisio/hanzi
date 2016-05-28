@@ -1,4 +1,4 @@
-package org.galobis.hanzi.database.unihan;
+package org.galobis.hanzi.database.ideogram;
 
 public class UnihanConstants {
     public static final String CHARACTER = "char";

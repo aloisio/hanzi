@@ -1,4 +1,4 @@
-package org.galobis.hanzi.database.unihan;
+package org.galobis.hanzi.database.ideogram;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

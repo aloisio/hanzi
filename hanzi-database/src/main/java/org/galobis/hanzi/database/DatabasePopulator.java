@@ -6,14 +6,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.apache.derby.jdbc.EmbeddedDriver;
-import org.galobis.hanzi.database.frequency.simplified.HanziTableSimplifiedRankUpdateVisitor;
-import org.galobis.hanzi.database.frequency.simplified.SimplifiedRankReader;
-import org.galobis.hanzi.database.unihan.HanziTableInsertVisitor;
-import org.galobis.hanzi.database.unihan.PinyinTableInsertVisitor;
-import org.galobis.hanzi.database.unihan.ReadingTableInsertVisitor;
-import org.galobis.hanzi.database.unihan.SimplifiedTableInsertVisitor;
-import org.galobis.hanzi.database.unihan.TraditionalTableInsertVisitor;
-import org.galobis.hanzi.database.unihan.UnihanReader;
+import org.galobis.hanzi.database.ideogram.HanziTableInsertVisitor;
+import org.galobis.hanzi.database.ideogram.PinyinTableInsertVisitor;
+import org.galobis.hanzi.database.ideogram.ReadingTableInsertVisitor;
+import org.galobis.hanzi.database.ideogram.SimplifiedTableInsertVisitor;
+import org.galobis.hanzi.database.ideogram.TraditionalTableInsertVisitor;
+import org.galobis.hanzi.database.ideogram.UnihanReader;
+import org.galobis.hanzi.database.ideogram.frequency.HanziTableSimplifiedRankUpdateVisitor;
+import org.galobis.hanzi.database.ideogram.frequency.SimplifiedRankReader;
 
 public class DatabasePopulator {
     private static final String[] DDL_STATEMENTS = {

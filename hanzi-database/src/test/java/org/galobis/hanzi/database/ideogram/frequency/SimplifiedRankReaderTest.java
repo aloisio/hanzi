@@ -1,4 +1,4 @@
-package org.galobis.hanzi.database.frequency.simplified;
+package org.galobis.hanzi.database.ideogram.frequency;
 
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;

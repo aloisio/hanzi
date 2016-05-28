@@ -1,4 +1,4 @@
-package org.galobis.hanzi.database.unihan;
+package org.galobis.hanzi.database.ideogram;
 
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 import static org.hamcrest.MatcherAssert.assertThat;

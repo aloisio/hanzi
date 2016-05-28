@@ -7,7 +7,6 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.stream.IntStream;
 
-import org.galobis.hanzi.database.util.BordaCounter;
 import org.junit.Test;
 
 public class BordaCounterTest {

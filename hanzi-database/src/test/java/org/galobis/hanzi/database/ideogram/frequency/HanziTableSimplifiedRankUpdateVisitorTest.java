@@ -1,4 +1,4 @@
-package org.galobis.hanzi.database.unihan;
+package org.galobis.hanzi.database.ideogram.frequency;
 
 import static org.hamcrest.Matchers.containsString;
 
@@ -14,7 +14,7 @@ import mockit.Expectations;
 import mockit.Injectable;
 import mockit.VerificationsInOrder;
 
-public class SimplifiedTableInsertVisitorTest {
+public class HanziTableSimplifiedRankUpdateVisitorTest {
 
     @Injectable
     private Connection connection;
@@ -28,24 +28,23 @@ public class SimplifiedTableInsertVisitorTest {
     public void createVisitor() throws Exception {
         new Expectations() {
             {
-                connection.prepareStatement(withArgThat(containsString("simplified")));
+                connection.prepareStatement(withArgThat(containsString("simplified_rank")));
                 result = statement;
             }
         };
 
-        visitor = new SimplifiedTableInsertVisitor(connection);
+        visitor = new HanziTableSimplifiedRankUpdateVisitor(connection);
     }
 
     @Test
-    public void should_add_batch_for_each_simplified_variant() throws Exception {
-        visitor.visit(new Hanzi.Builder("鍾").simplified("钟", "锺").build());
+    public void should_update_hanzi_table_with_ideogram_simplified_rank() throws Exception {
+        visitor.visit(new Hanzi.Builder("的").simplifiedRank(1).build());
+        visitor.visit(new Hanzi.Builder("是").simplifiedRank(3).build());
+
         new VerificationsInOrder() {
             {
-                statement.setInt(anyInt, 0x937E);
-                statement.setInt(anyInt, 0x949F);
-                statement.addBatch();
-                statement.setInt(anyInt, 0x937E);
-                statement.setInt(anyInt, 0x953A);
+                statement.setInt(anyInt, 1);
+                statement.setInt(anyInt, 3);
                 statement.addBatch();
             }
         };

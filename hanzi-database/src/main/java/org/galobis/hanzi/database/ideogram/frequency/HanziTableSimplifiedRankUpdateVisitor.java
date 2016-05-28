@@ -1,4 +1,4 @@
-package org.galobis.hanzi.database.frequency.simplified;
+package org.galobis.hanzi.database.ideogram.frequency;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

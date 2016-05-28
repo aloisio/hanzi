@@ -1,4 +1,4 @@
-package org.galobis.hanzi.database.unihan;
+package org.galobis.hanzi.database.ideogram;
 
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static java.util.Arrays.asList;

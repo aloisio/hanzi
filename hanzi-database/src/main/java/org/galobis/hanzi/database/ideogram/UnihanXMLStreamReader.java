@@ -1,4 +1,4 @@
-package org.galobis.hanzi.database.unihan;
+package org.galobis.hanzi.database.ideogram;
 
 import java.io.IOException;
 import java.io.InputStream;

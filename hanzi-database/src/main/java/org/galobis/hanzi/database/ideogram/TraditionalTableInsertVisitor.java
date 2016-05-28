@@ -1,4 +1,4 @@
-package org.galobis.hanzi.database.unihan;
+package org.galobis.hanzi.database.ideogram;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,22 +7,22 @@ import java.sql.SQLException;
 import org.galobis.hanzi.database.BatchHanziVisitor;
 import org.galobis.hanzi.domain.model.Hanzi;
 
-public class SimplifiedTableInsertVisitor extends BatchHanziVisitor {
+public class TraditionalTableInsertVisitor extends BatchHanziVisitor {
 
-    public SimplifiedTableInsertVisitor(Connection connection) throws Exception {
+    public TraditionalTableInsertVisitor(Connection connection) throws Exception {
         super(connection);
     }
 
     @Override
     protected String getSQL() {
-        return "INSERT INTO simplified(codepoint, simplified) VALUES (?,?)";
+        return "INSERT INTO traditional(codepoint, traditional) VALUES (?,?)";
     }
 
     @Override
     protected void addBatches(PreparedStatement statement, Hanzi hanzi) throws SQLException {
-        for (Hanzi simplified : hanzi.simplified()) {
+        for (Hanzi traditional : hanzi.traditional()) {
             statement.setInt(1, hanzi.codePoint());
-            statement.setInt(2, simplified.codePoint());
+            statement.setInt(2, traditional.codePoint());
             statement.addBatch();
         }
     }

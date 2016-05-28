@@ -1,14 +1,14 @@
-package org.galobis.hanzi.database.unihan;
+package org.galobis.hanzi.database.ideogram;
 
-import static org.galobis.hanzi.database.unihan.UnihanConstants.CHARACTER;
-import static org.galobis.hanzi.database.unihan.UnihanConstants.CODE_POINT;
-import static org.galobis.hanzi.database.unihan.UnihanConstants.DEFINITION;
-import static org.galobis.hanzi.database.unihan.UnihanConstants.HANYU_PINLU;
-import static org.galobis.hanzi.database.unihan.UnihanConstants.HANYU_PINYIN;
-import static org.galobis.hanzi.database.unihan.UnihanConstants.MANDARIN;
-import static org.galobis.hanzi.database.unihan.UnihanConstants.SIMPLIFIED;
-import static org.galobis.hanzi.database.unihan.UnihanConstants.TRADITIONAL;
-import static org.galobis.hanzi.database.unihan.UnihanConstants.XHC1983;
+import static org.galobis.hanzi.database.ideogram.UnihanConstants.CHARACTER;
+import static org.galobis.hanzi.database.ideogram.UnihanConstants.CODE_POINT;
+import static org.galobis.hanzi.database.ideogram.UnihanConstants.DEFINITION;
+import static org.galobis.hanzi.database.ideogram.UnihanConstants.HANYU_PINLU;
+import static org.galobis.hanzi.database.ideogram.UnihanConstants.HANYU_PINYIN;
+import static org.galobis.hanzi.database.ideogram.UnihanConstants.MANDARIN;
+import static org.galobis.hanzi.database.ideogram.UnihanConstants.SIMPLIFIED;
+import static org.galobis.hanzi.database.ideogram.UnihanConstants.TRADITIONAL;
+import static org.galobis.hanzi.database.ideogram.UnihanConstants.XHC1983;
 
 import java.io.IOException;
 import java.io.InputStream;
