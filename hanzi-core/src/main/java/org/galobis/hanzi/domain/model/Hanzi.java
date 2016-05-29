@@ -20,6 +20,18 @@ public class Hanzi {
 
     private final Integer simplifiedRank;
 
+    private final Integer traditionalRank;
+
+    private Hanzi(Builder builder) {
+        codePoint = builder.codePoint;
+        definition = builder.definition;
+        readings = builder.readings;
+        simplified = builder.simplified;
+        traditional = builder.traditional;
+        simplifiedRank = builder.simplifiedRank;
+        traditionalRank = builder.traditionalRank;
+    }
+
     public Integer codePoint() {
         return codePoint;
     }
@@ -42,6 +54,10 @@ public class Hanzi {
 
     public Integer simplifiedRank() {
         return simplifiedRank;
+    }
+
+    public Integer traditionalRank() {
+        return traditionalRank;
     }
 
     @Override
@@ -78,6 +94,8 @@ public class Hanzi {
         private List<Hanzi> traditional = Arrays.asList();
 
         private Integer simplifiedRank;
+
+        private Integer traditionalRank;
 
         public Builder(int codePoint) {
             this.codePoint = validate(codePoint);
@@ -144,6 +162,11 @@ public class Hanzi {
             return this;
         }
 
+        public Builder traditionalRank(Integer rank) {
+            this.traditionalRank = rank;
+            return this;
+        }
+
         private static Integer validate(int codePoint) {
             if (Character.isValidCodePoint(codePoint)) {
                 return codePoint;
@@ -157,14 +180,5 @@ public class Hanzi {
             }
             return ideogram;
         }
-    }
-
-    private Hanzi(Builder builder) {
-        codePoint = builder.codePoint;
-        definition = builder.definition;
-        readings = builder.readings;
-        simplified = builder.simplified;
-        traditional = builder.traditional;
-        simplifiedRank = builder.simplifiedRank;
     }
 }

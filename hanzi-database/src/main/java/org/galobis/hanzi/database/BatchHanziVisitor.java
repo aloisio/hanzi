@@ -43,7 +43,7 @@ public abstract class BatchHanziVisitor implements HanziVisitor {
     }
 
     @Override
-    public void visit(Hanzi hanzi) {
+    public final void visit(Hanzi hanzi) {
         try {
             addBatches(statement, hanzi);
             if ((statement.getBatchCount() % batchSize) == 0) {

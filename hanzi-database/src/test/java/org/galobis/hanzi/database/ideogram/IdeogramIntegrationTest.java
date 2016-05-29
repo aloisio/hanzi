@@ -15,9 +15,11 @@ import static org.hamcrest.Matchers.is;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.zip.ZipInputStream;
 
 import javax.xml.parsers.SAXParserFactory;
@@ -39,7 +41,7 @@ public class IdeogramIntegrationTest {
 
     private static final String COLUMN_DEFINITION = "definition";
 
-    private static final String SQL_COLUMN_HANZI = "SELECT %s FROM hanzi WHERE codepoint IN (%d, %d, %d)";
+    private static final String SQL_COLUMN_HANZI = "SELECT %s FROM hanzi WHERE codepoint IN (%s)";
 
     private static final String SQL_COUNT_HANZI = "SELECT COUNT(%s) FROM hanzi";
 
@@ -84,9 +86,10 @@ public class IdeogramIntegrationTest {
     @Test
     public void database_should_contain_unihan_codepoints() throws Exception {
         List<Integer> codepoints = asList(connection,
-                String.format(SQL_COLUMN_HANZI, COLUMN_CODEPOINT, asInt("才"), asInt("的"), asInt("𠜱")),
+                String.format(SQL_COLUMN_HANZI, COLUMN_CODEPOINT,
+                        codePointsOf("才", "的", "𠜱", "𩷶")),
                 Integer.class);
-        assertThat(codepoints, contains(asInt("才"), asInt("的"), asInt("𠜱")));
+        assertThat(codepoints, contains(asInt("才"), asInt("的"), asInt("𠜱"), asInt("𩷶")));
     }
 
     @Test
@@ -101,7 +104,8 @@ public class IdeogramIntegrationTest {
     @Test
     public void database_should_contain_Unihan_definitions() throws Exception {
         List<String> definitions = asList(connection,
-                String.format(SQL_COLUMN_HANZI, COLUMN_DEFINITION, asInt("梦"), asInt("覉"), asInt("䃟")),
+                String.format(SQL_COLUMN_HANZI, COLUMN_DEFINITION,
+                        codePointsOf("梦", "覉", "䃟")),
                 String.class);
         assertThat(definitions,
                 containsInAnyOrder("dream; visionary; wishful",
@@ -184,6 +188,16 @@ public class IdeogramIntegrationTest {
 
     public static Integer asInt(String hanzi) {
         return hanzi.codePointAt(0);
+    }
+    
+    public static String codePointsOf(String... ideograms) {
+        return String.join(",",
+                Arrays.asList(ideograms)
+                .stream().sequential()
+                .map(IdeogramIntegrationTest::asInt)
+                .map(Object::toString)
+                .collect(Collectors.toList())
+                .toArray(new String[0]));
     }
 
     private static void collectUnihanStats() throws Exception {

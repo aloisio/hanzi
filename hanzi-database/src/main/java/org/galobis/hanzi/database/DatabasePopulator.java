@@ -13,13 +13,16 @@ import org.galobis.hanzi.database.ideogram.SimplifiedTableInsertVisitor;
 import org.galobis.hanzi.database.ideogram.TraditionalTableInsertVisitor;
 import org.galobis.hanzi.database.ideogram.UnihanReader;
 import org.galobis.hanzi.database.ideogram.frequency.HanziTableSimplifiedRankUpdateVisitor;
+import org.galobis.hanzi.database.ideogram.frequency.HanziTableTraditionalRankUpdateVisitor;
 import org.galobis.hanzi.database.ideogram.frequency.SimplifiedRankReader;
+import org.galobis.hanzi.database.ideogram.frequency.TraditionalRankReader;
 
 public class DatabasePopulator {
     private static final String[] DDL_STATEMENTS = {
             "CREATE TABLE hanzi ("
                     + "codepoint INTEGER NOT NULL, definition LONG VARCHAR, "
                     + "simplified_rank INTEGER, "
+                    + "traditional_rank INTEGER, "
                     + "PRIMARY KEY (codepoint))",
             "CREATE TABLE pinyin ("
                     + "id INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
@@ -74,6 +77,7 @@ public class DatabasePopulator {
                 new SimplifiedTableInsertVisitor(connection),
                 new TraditionalTableInsertVisitor(connection))).read();
         new SimplifiedRankReader(new HanziTableSimplifiedRankUpdateVisitor(connection)).read();
+        new TraditionalRankReader(new HanziTableTraditionalRankUpdateVisitor(connection)).read();
     }
 
     private static void shutdownDatabase(String connectionURL) {

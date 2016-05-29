@@ -130,6 +130,12 @@ public class HanziTest {
                 new Hanzi.Builder("的").simplifiedRank(1).build().simplifiedRank());
     }
 
+    @Test
+    public void should_allow_passing_traditional_character_rank_to_builder() {
+        assertEquals(Integer.valueOf(1),
+                new Hanzi.Builder("的").traditionalRank(1).build().traditionalRank());
+    }
+
     private void assertBuildingHanziFailsWith(String invalidInput) {
         try {
             new Hanzi.Builder(invalidInput).build();
